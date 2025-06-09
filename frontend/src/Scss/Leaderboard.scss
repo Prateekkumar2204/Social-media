@@ -1,0 +1,77 @@
+/* Leaderboard.css */
+.leaderboard-container {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  color: #ffffff;
+  height:80%;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  resize: none;
+}
+
+.table {
+  border-collapse: collapse;
+  max-height: 100px;
+  margin: 10px;
+  width: 100%;
+  overflow-y: auto;
+  resize: none;
+}
+tr{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+th, td {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #333333;
+}
+
+.medal {
+  width: 30px;
+  height: 30px;
+}
+.name {
+  margin-left: 60px;
+}
+.leaderboard-upper-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.table-div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 35px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background: black;
+  height: 70px;
+}
+tbody{
+  height: 100%;
+  overflow: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.table-container {
+  resize: none; /* Adjust the max height as needed */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+

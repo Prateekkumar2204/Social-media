@@ -1,0 +1,67 @@
+/* LoginComponent.css */
+*{
+    width: 100%;
+}
+  .forminputemail{
+    width:70%;
+    padding-left: auto;
+  }
+  .outeremaildiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .forminputpassword{
+    width:70%;
+    padding-left: auto;
+  }
+  .outerpassworddiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .loginbtn{
+    width:30%;
+  }
+  .loginbtndiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .loginpara{
+    text-align: center;
+  }
+.loginheading{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 50px 0px;
+}
+.login-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.login-cont{
+display: flex;
+align-items: center;
+height: fit-content;
+width: 40%;
+background-color: white;
+box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+border-radius: 10px;
+background-color: #F5F5F5;
+}
+.login-form {
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+height: 50px;
+margin-left: auto;
+height: fit-content;
+background-color: #F5F5F5;
+}
