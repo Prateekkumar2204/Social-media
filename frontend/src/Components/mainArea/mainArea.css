@@ -1,0 +1,158 @@
+.uppercontainer {
+    padding: 20px 200px;
+}
+
+.containerArea {
+    display: grid;
+    grid-template-columns: repeat(5, 3fr);
+    grid-template-rows: repeat(6, 3fr);
+    row-gap: 10px;
+    column-gap: 10px;
+}
+
+.leftPane {
+    display: flex;
+    justify-content: center;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 5;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 0px 10px;
+    align-items: end;
+    padding: 5px;
+    flex-direction: column;
+    background-color: #F5F5F5;
+}
+
+.stageArea {
+    position: relative;
+    grid-column-start: 2;
+    grid-column-end: 6;
+    grid-row-start: 1;
+    grid-row-end: 7;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+    padding: 10px;
+    overflow-y: auto;
+    /* Add this line to make it scrollable vertically */
+    max-height: 100%;
+}
+
+.stageArea::-webkit-scrollbar {
+    display: none;
+}
+
+.rightpane {
+    display: flex;
+    justify-content: center;
+    grid-column-start: 5;
+    grid-column-end: 6;
+    grid-row-start: 1;
+    grid-row-end: 7;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 0px 10px;
+    align-items: end;
+    padding: 5px;
+    flex-direction: column;
+    background-color: #F5F5F5;
+}
+
+.main-textarea {
+    resize: none;
+    border: none;
+    outline: none;
+    font-family: monospace;
+    font-size: 18px;
+    caret-color: transparent;
+    background-color: transparent;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    height: 100%;
+}
+
+.post {
+    height: fit-content;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.post-image {
+    max-height: 70%;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.user-button {
+    height: fit-content;
+    display: flex;
+    justify-content: space-between;
+    background-color: none;
+    margin: 10px 0px;
+    width: 80%;
+}
+
+.like-comment {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+}
+
+.update-delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+}
+
+.caption {
+    width: 80%;
+    margin: 10px 0px 20px 0px;
+}
+
+.comments {
+    width: 80%;
+}
+
+.middle-comment {
+    font-weight: bold;
+}
+
+.input-message {
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.scrollComment {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.scrollComment::-webkit-scrollbar {
+    display: none;
+}
+
+.user-name {
+    width: 80%;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.likecount {
+    margin-right: 20px;
+    font-size: 20px;
+}

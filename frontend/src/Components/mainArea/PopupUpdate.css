@@ -1,0 +1,97 @@
+/* Modal.css */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 40%;
+  height: 93%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  padding: 10px 0px;
+}
+
+.data-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+  padding: 20px 0px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background: black;
+  color: white;
+  font-size: 10px;
+}
+
+.modal-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.cancel-btn {
+  height: fit-content;
+  font-size: 20px;
+}
+
+.postimage {
+  height: fit-content;
+  width: fit-content;
+}
+
+.postcomment {
+  height: 100%;
+}
+
+.middle-content {
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.middleUpper {
+  height: fit-content;
+  margin: 10px 0px;
+}
+
+.cancel {
+  height: fit-content;
+  margin-bottom: 10px;
+}
+
+.cancel-btn2 {
+  width: 50px;
+  height: 40px;
+}
+
+#image-profile {
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+}

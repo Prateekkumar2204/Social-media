@@ -1,124 +1,174 @@
-.container-profile{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body {
+  background-color: #F5E1E9;
+  min-height: 100vh;
+  margin: 0;
 }
-.inner-profile{
-    height: 80%;
-    width: 60%;
-    display: grid;
-    grid-template-columns: repeat(3, 2fr);
-    grid-template-rows: repeat(4, 2fr);
-    row-gap: 10px;
-    column-gap: 10px;
+
+.container-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
-.leftprofile{
-    display: flex;
+
+.inner-profile {
+  height: 80%;
+  width: 80%; /* Increased from 60% to 80% */
+  display: grid;
+  grid-template-columns: 40% 60%; /* 40-60 split */
+  grid-template-rows: repeat(4, 1fr);
+  row-gap: 10px;
+  column-gap: 10px;
+}
+
+.leftprofile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-column: 1 / 2;
+  grid-row: 1 / 5;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+  padding: 5px;
+  overflow: hidden;
+}
+
+.leftprofile-top, .leftprofile-bottom {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.leftprofile-top {
+  flex: 1.2; // More space to image
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    grid-column-start: 1;
-    grid-column-end: 2;
-    grid-row-start: 1;
-    grid-row-end: 5;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    background-color: #F5F5F5;
-    padding: 0px 10px;
-    align-items: end;
-    padding: 5px;
 }
-.centerprofile{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    grid-column-start: 2;
-    grid-column-end: 4;
-    grid-row-start: 1;
-    grid-row-end: 4;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    padding: 5px;
-    background-color: #F5F5F5;
+
+.leftprofile-bottom {
+  flex: 0.8;
+  text-align: center;
 }
-.bottomprofile{
-    grid-column-start: 2;
-    grid-column-end: 4;
-    padding: 5px;
-    grid-row-start: 4;
-    grid-row-end: 5;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    background-color: #F5F5F5;
+
+.leftprofile .image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.text-center2{
-    height: fit-content;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    padding: 2px 0px;
-    text-align: center;
+
+.leftprofile .image img {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  border-radius: 10px; // You can use 50% for circular
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
-.profiletext{
-    height: fit-content;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+
+.centerprofile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  grid-column: 2 / 3;
+  grid-row: 1 / 4;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 5px;
+  background-color: #F5F5F5;
 }
-.profiletext2{
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    padding: 2px 0px;
+
+.bottomprofile {
+  grid-column: 2 / 3;
+  grid-row: 4 / 5;
+  padding: 5px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
 }
-.profile-content{
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
+
+.text-center2 {
+  height: fit-content;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 2px 0px;
+  text-align: center;
 }
-.profile-email{
-    height: fit-content;
-    font-size: 20px;
-    margin-bottom: 20px;
+
+.profiletext {
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.profile-friend{
-    height: fit-content;
-    font-size: 20px;
-    margin-top: 20px;
+
+.profiletext2 {
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 2px 0px;
 }
-.content-text1{
-    height: fit-content;
+
+.profile-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
 }
-.content-text2{
-    height: fit-content;
+
+.profile-email {
+  height: fit-content;
+  font-size: 20px;
+  margin-bottom: 20px;
 }
-.profile-lower{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+.profile-friend {
+  height: fit-content;
+  font-size: 20px;
+  margin-top: 20px;
 }
-.upload-text{
-    height: fit-content;
+
+.content-text1 {
+  height: fit-content;
 }
-.profile-lower-inner1{
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    padding: 10px;
+
+.content-text2 {
+  height: fit-content;
 }
-.profile-lower-inner2{
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    align-items: end;
-    padding: 10px;
+
+.profile-lower {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.profile-lower2{
-    height: 70%;
-    font-size: 20px;
+
+.upload-text {
+  height: fit-content;
 }
-.upload-btn{
-    height: fit-content;
-    width: 50%;
+
+.profile-lower-inner1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding: 10px;
+}
+
+.profile-lower-inner2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: end;
+  padding: 10px;
+}
+
+.profile-lower2 {
+  height: 70%;
+  font-size: 20px;
+}
+
+.upload-btn {
+  height: fit-content;
+  width: 50%;
 }
