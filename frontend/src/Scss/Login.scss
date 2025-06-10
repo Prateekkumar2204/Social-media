@@ -29,7 +29,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #EDE7F6;
   }
   .loginpara{
     text-align: center;
@@ -45,7 +44,6 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  background-color: #735DA5;
 }
 .login-cont{
 display: flex;
@@ -55,7 +53,7 @@ width: 40%;
 background-color: white;
 box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
 border-radius: 10px;
-background-color: #D3C5E5;
+background-color: #F5F5F5;
 }
 .login-form {
 display: flex;
@@ -65,4 +63,5 @@ flex-direction: column;
 height: 50px;
 margin-left: auto;
 height: fit-content;
+background-color: #F5F5F5;
 }
