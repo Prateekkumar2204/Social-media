@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react';
 import "../Scss/VideoCall.scss";
-import { useAuth } from '../store/Auth';
 
 const VideoCall = () => {
-    // const { token, setUser, user, socket } = useAuth()
-
-    let APP_ID = "9e5d7033251d4266813c1b19470cd898"
-    let uid = String(Math.floor(Math.random() * 10000))
-    let token = null
+    let APP_ID = "7f251e436fa84451a507453ec054fcc2";
+    let uid = String(Math.floor(Math.random() * 10000));
+    let token = null;
 
     let client;
     let channel;
@@ -22,117 +19,126 @@ const VideoCall = () => {
                 urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302']
             }
         ]
-    }
+    };
 
-    let isInitialized = false; // Add this variable to track initialization
+    let isInitialized = false;
 
     let init = async () => {
         try {
-            if (!isInitialized) { // Check if not already initialized
-                isInitialized = true; // Set to true to prevent reinitialization
+            if (!isInitialized) {
+                isInitialized = true;
 
-                client = AgoraRTM.createInstance(APP_ID); // Create Agora RTM instance
-                await client.login({ uid, token }); // Login using user ID and token
+                if (!window.AgoraRTM || typeof window.AgoraRTM.createInstance !== 'function') {
+                    throw new Error("AgoraRTM SDK is not loaded. Check your CDN link in index.html.");
+                }
+
+                const response = await fetch(`http://localhost:3000/api/getAgoraToken?uid=${uid}`);
+                const data = await response.json();
+                token = data.token;
+
+                client = AgoraRTM.createInstance(APP_ID);
+                await client.login({ uid, token });
 
                 channel = client.createChannel('main');
                 await channel.join();
 
                 channel.on('MemberJoined', handleUserJoined);
-                channel.on('MemberLeft', handleUserLeft)
+                channel.on('MemberLeft', handleUserLeft);
                 client.on('MessageFromPeer', handleMessageFromPeer);
+
                 localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
                 document.getElementById('user1').srcObject = localStream;
             }
         } catch (error) {
-            console.error('Error accessing media devices:', error);
+            console.error('Error initializing video call:', error);
         }
     };
 
-    let handleUserLeft = (MemberId) => {
-        document.getElementById('user-2').style.display = 'none'
-    }
+    let handleUserLeft = () => {
+        document.getElementById('user2').style.display = 'none';
+    };
+
     let handleMessageFromPeer = async (message, MemberId) => {
-        message = JSON.parse(message.text)
-        if (message.type === 'offer') {
-            createAnswer(MemberId, message.offer)
-        }
-        if (message.type === 'answer') {
-            addAnswer(message.answer)
-        }
-        if (message.type === 'candidate') {
+        const parsed = JSON.parse(message.text);
+        if (parsed.type === 'offer') {
+            createAnswer(MemberId, parsed.offer);
+        } else if (parsed.type === 'answer') {
+            addAnswer(parsed.answer);
+        } else if (parsed.type === 'candidate') {
             if (peerConnection) {
-                peerConnection.addIceCandidate(message.candidate)
+                peerConnection.addIceCandidate(parsed.candidate);
             }
         }
-        console.log('Message:', message.text)
-    }
+    };
 
     let handleUserJoined = async (MemberId) => {
-        console.log('A new user joined the channel: ', MemberId);
-        // Display a message indicating that another user has joined
         alert('Another user has joined the channel');
         createOffer(MemberId);
-    }
+    };
+
     let createPeerConnection = async (MemberId) => {
         peerConnection = new RTCPeerConnection(servers);
-
         remoteStream = new MediaStream();
-        document.getElementById('user2').srcObject = remoteStream; // Corrected typo
-        document.getElementById('user2').style.display = 'block' // Corrected typo
+        document.getElementById('user2').srcObject = remoteStream;
+        document.getElementById('user2').style.display = 'block';
 
         if (!localStream) {
             localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
             document.getElementById('user1').srcObject = localStream;
         }
-        localStream.getTracks().forEach((track) => {
+
+        localStream.getTracks().forEach(track => {
             peerConnection.addTrack(track, localStream);
         });
 
         peerConnection.ontrack = (event) => {
-            event.streams[0].getTracks().forEach((track) => {
+            event.streams[0].getTracks().forEach(track => {
                 remoteStream.addTrack(track);
             });
         };
 
         peerConnection.onicecandidate = async (event) => {
             if (event.candidate) {
-                client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'candidate', 'candidate': event.candidate }) }, MemberId)
+                client.sendMessageToPeer(
+                    { text: JSON.stringify({ type: 'candidate', candidate: event.candidate }) },
+                    MemberId
+                );
             }
         };
-    }
-    let createOffer = async (MemberId) => {
-        await createPeerConnection(MemberId)
+    };
 
+    let createOffer = async (MemberId) => {
+        await createPeerConnection(MemberId);
         let offer = await peerConnection.createOffer();
         await peerConnection.setLocalDescription(offer);
+        client.sendMessageToPeer({ text: JSON.stringify({ type: 'offer', offer }) }, MemberId);
+    };
 
-        console.log(offer);
-        client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'offer', 'offer': offer }) }, MemberId)
-    }
     let createAnswer = async (MemberId, offer) => {
-        await createPeerConnection(MemberId)
-        await peerConnection.setRemoteDescription(offer)
-        let answer = await peerConnection.createAnswer()
-        await peerConnection.setLocalDescription(answer)
-        client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'answer', 'answer': answer }) }, MemberId)
-
-
-    }
+        await createPeerConnection(MemberId);
+        await peerConnection.setRemoteDescription(offer);
+        let answer = await peerConnection.createAnswer();
+        await peerConnection.setLocalDescription(answer);
+        client.sendMessageToPeer({ text: JSON.stringify({ type: 'answer', answer }) }, MemberId);
+    };
 
     let addAnswer = async (answer) => {
         if (!peerConnection.currentRemoteDescription) {
-            peerConnection.setRemoteDescription(answer)
+            await peerConnection.setRemoteDescription(answer);
         }
-    }
+    };
 
     let leaveChannel = async () => {
-        await channel.leave()
-        await client.logout()
-    }
+        if (channel) await channel.leave();
+        if (client) await client.logout();
+    };
 
-    window.addEventListener('beforeunload', leaveChannel)
     useEffect(() => {
         init();
+        window.addEventListener('beforeunload', leaveChannel);
+        return () => {
+            leaveChannel();
+        };
     }, []);
 
     return (

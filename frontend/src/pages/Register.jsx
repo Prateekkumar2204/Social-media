@@ -51,8 +51,8 @@ const Register = () => {
   };
   return (
     <section >
-      <div className="whole" style={{ backgroundColor: '#735DA5' }}>
-        <div className="container register-pane" style={{ backgroundColor: '#D3C5E5' }}>
+      <div className="whole" >
+        <div className="container register-pane">
                   <h2 className="text-uppercase text-center mb-5 mt-2">Create an account</h2>
 
                   <form onSubmit={handleSubmit} method='post'>
@@ -115,7 +115,7 @@ const Register = () => {
                       <button type="submit" className="btn btn-success btn-block btn-lg" style={{ background: 'black' }}>Register</button>
                     </div>
 
-                    <p className="text-center text-muted mt-5 mb-0">Have already an account? <Link to="/login" style={{ color: '#8E4585' }}><u>Login here</u></Link></p>
+                    <p className="text-center text-muted mt-5 mb-0">Have already an account? <Link to="/login" className="fw-bold text-body"><u>Login here</u></Link></p>
                   </form>
                 </div>
               

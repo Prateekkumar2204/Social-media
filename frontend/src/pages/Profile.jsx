@@ -26,21 +26,17 @@ const Profile = () => {
   console.log(user._id)
   return (
     
-    <div className="container container-profile w-full" >
-      <div className="inner-profile" >
-        <div className="leftprofile" style={{ backgroundColor: '#E6DFF0'}}>
-          <h2 className="font-weight-bold profiletext mb-3 profiletext2" style={{ backgroundColor: '#735DA5', color:'#EDE7F6'}}>Profile</h2>
-          <div className="leftprofile-top">
-            <div className="image">
-              <img src={`http://localhost:3000/images/${user.image}`} />
-            </div>
+    <div className="container container-profile">
+      <div className="inner-profile">
+        <div className="leftprofile">
+          <h2 className="font-weight-bold profiletext mb-3 bg-black text-white profiletext2">Profile</h2>
+          <p className="profiletext mt-1 mb-5">{user.name}</p>
+          <div>
+            <img src={`http://localhost:3000/images/${user.image}`}/>
           </div>
-          <div className="leftprofile-bottom">
-    <p className="mt-1 mb-5" style={{fontSize: 32}}>{user.name}</p>
-  </div>
         </div>
-        <div className="centerprofile" style={{ backgroundColor: '#E6DFF0'}}>
-          <h2 className="text-center2" style={{ backgroundColor: '#735DA5', color:'#EDE7F6'}}>Information</h2>
+        <div className="centerprofile">
+          <h2 className="text-center2 bg-black text-white">Information</h2>
               <div className="profile-content">
                 <div className="profile-email">
                   <p className="font-weight-bold mb-2 content-text1">Email:</p>
@@ -57,12 +53,12 @@ const Profile = () => {
                   <input type="file" className="form-control-file upload-text" onChange={e => setImage(e.target.files[0])} />
                 </div>
                   <div className="d-flex profile-lower-inner2">
-                    <button className="btn btn-dark ml-2 upload-btn" style={{ backgroundColor: '#8E4585'}}type="button" onClick={submitImage}>Upload</button>
+                    <button className="btn btn-dark ml-2 upload-btn" type="button" onClick={submitImage}>Upload</button>
                   </div>
                 </div>
               </div>
-              <div className="bottomprofile" style={{ backgroundColor: '#E6DFF0'}}>
-                <h2 className="text-white text-center2" style={{ backgroundColor: '#735DA5', color:'#EDE7F6'}}>ScoreCard</h2>
+              <div className="bottomprofile">
+                <h2 className="bg-black text-white text-center2">ScoreCard</h2>
                 <div className="profile-lower profile-lower2">
                   <div className="profile-lower-inner1 upload-text">
                     <p className="font-weight-bold">Recent</p>

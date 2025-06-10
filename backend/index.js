@@ -14,14 +14,14 @@ const AGORA_APP_ID = "7f251e436fa84451a507453ec054fcc2";
 const AGORA_APP_CERTIFICATE = "7386a06b64fe4aa1b46ee334f7e712af";
 
 //import userSchema
-const User=require("./model/userSchema")
-const Post=require("./model/postModel")
-const Group=require("./model/group")
+const User=require("./model/userSchema.js")
+const Post=require("./model/postModel.js")
+const Group=require("./model/group.js")
 app.use(express.json())
 app.use(cors())
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
-app.use(require('./routers/useroutes'))
+app.use(require('./routers/useroutes.js'))
 const path = require('path')
 
 const storage=multer.diskStorage({
