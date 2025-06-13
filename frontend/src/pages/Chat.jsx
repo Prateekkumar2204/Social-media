@@ -155,10 +155,10 @@ import RoomPop from "../Components/mainArea/RoomPopUp.jsx"
             <div className="timer-area-text2">FRIENDS</div>
           </div>
           
-            <div className="friends-area-container">
-              <div className="friends-area">
+            <div className="friends-area-container" >
+              <div className="friends-area" >
                 {currFriend.map((friend, index) => (
-                  <div key={index} className="search-box search-friend-out" onClick={()=>chatFriend(friend._id)}>
+                  <div key={index} className="search-box search-friend-out" style={{ backgroundColor: "#E6DFF0", color:"black", marginTop: "10px" }} onClick={()=>chatFriend(friend._id)}>
                     <div className="search-out">
                       <div className="search-item">{friend.name}</div>
                       <div className="search-item">{friend.email}</div>
@@ -177,7 +177,7 @@ import RoomPop from "../Components/mainArea/RoomPopUp.jsx"
         </div>
         <div className="right-friend">
           <div className="heading">CHAT</div>
-          <div className="friends-area-container right-friend-request" ref={scrollRef}>
+          <div className="friends-area-container right-friend-request" style={{ backgroundColor: "#E6DFF0" }} ref={scrollRef}>
               {currChat ? <ChatContainer currFriendChat={currFriendChat} socket={socket}/> : <Welcome />}
           </div>
           {currChat && <div className="button-container">
@@ -193,6 +193,7 @@ import RoomPop from "../Components/mainArea/RoomPopUp.jsx"
                 <button
                   type="button"
                   className="btn btn-dark search-button submit-button"
+                  style={{ backgroundColor: "#36013f"}}
                   onClick={sendMessage}
                 >
                   SEND

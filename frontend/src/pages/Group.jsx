@@ -274,13 +274,13 @@ const sendGroupChat = (event) => {
             </div>
           </div>
           
-            <div className="friends-area-container">
+            <div className="friends-area-container" >
             {groupadded && <Modal setGroupAdded={setGroupAdded} toBeAdded={toBeAdded} setToBeAdded={setToBeAdded} />}
             {addMem && <Modal2  currGroup={currGroup} addMem={addMem} removeMem={removeMem} setAddMem={setAddMem} setRemoveMem={setRemoveMem} toBeAdded={membersToBeAdded} setToBeAdded={setMembersToBeAdded}/>}
             {removeMem && <Modal2 currGroup={currGroup} addMem={addMem} removeMem={removeMem} setRemoveMem={setRemoveMem} setAddMem={setAddMem} toBeAdded={membersToBeDeleted} setToBeAdded={setMembersToBeDeleted}/>}
-              <div className="friends-area">
+              <div className="friends-area" >
                 {currFriend.map((friend, index) => (
-                  <div key={index} className="search-box search-friend-out" onClick={()=>chatFriend(friend._id)}>
+                  <div key={index} style={{ backgroundColor: "#E6DFF0", color:"black", marginTop: "10px" }} className="search-box search-friend-out" onClick={()=>chatFriend(friend._id)}>
                     <div className="search-out2">
                       <div className="search-item2">{friend.name}</div>
                       {user._id===friend.creator_id && 
@@ -311,7 +311,7 @@ const sendGroupChat = (event) => {
         </div>
         <div className="right-friend">
           <div className="heading">GROUP CHAT</div>
-          <div className="friends-area-container right-friend-request" ref={scrollRef}>
+          <div className="friends-area-container right-friend-request" style={{ backgroundColor: "#E6DFF0", color:"black" }} ref={scrollRef}>
               {currChat ? <GroupChatContainer currFriendChat={currFriendChat}/> : <Welcome />}
           </div>
           {currChat && <div className="button-container">
@@ -326,6 +326,7 @@ const sendGroupChat = (event) => {
                 />
                 <button
                   type="button"
+                  style={{ backgroundColor: "#36013f"}}
                   className="btn btn-dark search-button submit-button"
                   onClick={sendMessage}
                 >

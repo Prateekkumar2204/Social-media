@@ -1,3 +1,14 @@
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+}
+
+
 .contactus-main{
     height: fit-content;
     display: flex;
@@ -8,9 +19,20 @@
 }
 
 .image-contactus{
-    size:45px;
+  width: 400px;    // or any value like 200px, 10rem, 50%
+  height: 400px;   // same as above, or auto to maintain aspect ratio
+  object-fit: cover;
     padding:10%;
+    align-items: center;
 }
+
+.card-content-1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   // centers horizontally
+  text-align: center;    // centers text
+}
+
 .names{
     width: 100%;
     height: fit-content;
@@ -20,4 +42,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.btn-primary {
+  background-color: #36013f; // your custom color
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+  margin-bottom: 10px;
+
 }

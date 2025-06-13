@@ -68,15 +68,20 @@
   .search-box {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    background-color: gray;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    align-items: flex-start;
+    background-color: #E6DFF0;
+    box-shadow: 0 0 6px #735DA5;
     border-radius: 10px;
     padding: 10px;
     margin: 5px 0px;
+    height: fit-content;
   }
   .request-button{
-    width: fit-content;
+    padding: 5px 10px;           // Make button smaller
+    font-size: 14px; 
+    height: fit-content;
+    background-color: #36013f;
+    margin-left: 20px;
   }
   .search-out{
     width: fit-content;
@@ -102,7 +107,7 @@
     padding: 0px 10px;
   }
   .search-friend-out{
-    background-color: black;
+    background-color: #735DA5;
     color: white;
   }
   .showfriend.showfriend::-webkit-scrollbar{

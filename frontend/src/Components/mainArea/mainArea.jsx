@@ -161,6 +161,7 @@ export default function MainArea() {
                     <button
                       type="button"
                       className="btn btn-dark search-button submit-button"
+                      style={{ backgroundColor: "#36013f"}}
                       onClick={() => { sendcomment(message.post._id) }}
                     >
                       SEND

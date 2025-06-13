@@ -1,13 +1,47 @@
-#videos{
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    padding: 0px 100px;
+#videos {
+  display: flex;
+  margin-top: 190px;
+  align-items: center;
+  gap: 2rem;
+  padding: 0px 100px;
 }
 
-.video-player{
-    width: 50%;
-    height: 70%;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
+.video-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.end-call-container {
+  margin-top: -20rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.end-call-icon {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.video-player {
+  width: 600px;
+  height: 500px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.username-label {
+  margin-top: 8px;
+  font-size: 2rem;
+  font-weight: 200;
+  color: black;
+  text-align: center;
 }

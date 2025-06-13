@@ -13,9 +13,9 @@ body {
 
 .inner-profile {
   height: 80%;
-  width: 80%; /* Increased from 60% to 80% */
+  width: 80%; 
   display: grid;
-  grid-template-columns: 40% 60%; /* 40-60 split */
+  grid-template-columns: 40% 60%; 
   grid-template-rows: repeat(4, 1fr);
   row-gap: 10px;
   column-gap: 10px;

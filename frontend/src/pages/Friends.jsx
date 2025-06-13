@@ -1,4 +1,7 @@
 // friends.jsx
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import React, { useState } from 'react';
 import '../Scss/Friends.scss';
 import search1 from "../image/search1.png";
@@ -165,14 +168,26 @@ const Friends = () => {
       })
       if (res.ok) {
         const data = await res.json();
-        console.log(data)
+        console.log(data);
+        toast.success("Friend request sent!",{
+          className: "toastify-custom",
+          icon: false,            // to hide the checkmark
+          closeButton: false,     // to hide close button
+          hideProgressBar: true 
+        });
         firstRender()
       }
       else {
+        toast.error("Failed to send request.",{
+          className: "toastify-custom"
+        });
         console.log("some error")
       }
     } catch (err) {
-      console.log("error")
+      console.log("error");
+      toast.error("Network error while sending request.",{
+        className: "toastify-custom"
+      });
     }
   }
 
@@ -198,9 +213,9 @@ const Friends = () => {
           </div>
           {!searchToggle &&
             <div className="friends-area-container">
-              <div className="friends-area">
+              <div className="friends-area" >
                 {currFriend.map((friend, index) => (
-                  <div key={index} className="search-box search-friend-out">
+                  <div key={index} className="search-box search-friend-out" style={{ backgroundColor: "#E6DFF0",gap:"4px", color:"black",marginTop: "15px",marginLeft: "-2px",marginRight: "2px" }}>
                     <div className="search-out">
                       <div className="search-item">{friend.name}</div>
                       <div className="search-item">{friend.email}</div>
@@ -215,9 +230,11 @@ const Friends = () => {
           }
 
           {searchToggle && (
-            <div className="showfriend">
+            <div className="showfriend" style={{ backgroundColor: "#735DA5" }}
+ >
               {filteredFriends.map((friend, index) => (
-                <div key={index} className="search-box">
+                <div key={index} className="search-box"style={{ backgroundColor: "#E6DFF0", color:"black" }}
+>
                   <div className="search-out">
                     <div className="search-item">{friend.name}</div>
                     <div className="search-item">{friend.email}</div>
@@ -230,11 +247,11 @@ const Friends = () => {
         </div>
         <div className="right-friend">
           <div className="heading">PENDING REQUESTS</div>
-          <div className="friends-area-container right-friend-request">
-            <div className="friends-area">
+          <div className="friends-area-container right-friend-request" style={{ backgroundColor: "#E6DFF0" }}>
+            <div className="friends-area" >
               {currPending.map((friend, index) => (
-                <div key={index} className="search-box search-friend-out">
-                  <div className="search-out">
+                <div key={index} className="search-box search-friend-out" style={{ backgroundColor: "#E6DFF0", color:"black" }}>
+                  <div className="search-out" >
                     <div className="search-item">{friend.name}</div>
                     <div className="search-item">{friend.email}</div>
                   </div>
@@ -265,6 +282,9 @@ const Friends = () => {
           </div>
         </div>
       </div>
+      <ToastContainer position="top-right" theme="colored" newestOnTop autoClose={2000} style={{
+         height: 'fit-content',
+          }}/>
     </div>
   );
 };

@@ -53,8 +53,8 @@ const Modal = (props) => {
 
   console.log(formData.title)
   return (
-    <div className="modal">
-      <div className="modal-content">
+    <div className="modal" >
+      <div className="modal-content" style={{ backgroundColor: "#E6DFF0", color:"black" }}>
         <div className='cancel'><button className="btn btn-danger cancel-btn2" onClick={() => setpopupshow(false)}><img src={cancel}></img></button></div>
         <div className="modal-data">
           <div className="data">
@@ -65,13 +65,13 @@ const Modal = (props) => {
             )}
           </div>
         </div>
-        <div className='middleUpper'>
+        <div className='middleUpper' >
           <div className='middle-content'>
             <input type="file" class="form-control postimage" id="customFile" onChange={getimagepreview} />
             <input type="email" class="form-control postcomment" id="exampleFormControlInput1" placeholder="Enter the Caption" onChange={handleChange} name='title' value={formData.title}></input>
           </div>
         </div>
-        <button className="btn btn-dark cancel-btn" onClick={submit}>POST</button>
+        <button className="btn btn-dark cancel-btn" style={{ backgroundColor: "#36013f"}} onClick={submit}>POST</button>
       </div>
     </div>
   );

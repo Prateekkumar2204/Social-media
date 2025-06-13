@@ -1,7 +1,21 @@
 import React, { useEffect } from 'react';
 import "../Scss/VideoCall.scss";
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../store/auth';
+import endcallicon from "../image/endcallicon.png"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const VideoCall = () => {
+    const {user} =useAuth();
+    const navigate = useNavigate();
+
+  const handleEndCall = () => {
+  toast.error("Call ended");
+  leaveChannel();
+  setTimeout(() => navigate('/chat'), 1500); 
+};
+  
     let APP_ID = "7f251e436fa84451a507453ec054fcc2";
     let uid = String(Math.floor(Math.random() * 10000));
     let token = null;
@@ -56,6 +70,7 @@ const VideoCall = () => {
 
     let handleUserLeft = () => {
         document.getElementById('user2').style.display = 'none';
+        toast.info("User disconnected");
     };
 
     let handleMessageFromPeer = async (message, MemberId) => {
@@ -142,12 +157,29 @@ const VideoCall = () => {
     }, []);
 
     return (
-        <div>
-            <div id="videos">
-                <video className="video-player" id="user1" autoPlay playsInline></video>
-                <video className="video-player" id="user2" autoPlay playsInline></video>
+    <div>
+        <div id="videos">
+            <div className="video-container">
+                <video className="video-player" style={{ backgroundColor: "#E6DFF0" }} id="user1" autoPlay playsInline></video>
+                <p className="username-label">{user.name}</p>
+            </div>
+            <div className="video-container">
+                <video className="video-player" style={{ backgroundColor: "#FFFFFF" }} id="user2" autoPlay playsInline></video>
+                <p className="username-label">Friend</p>
             </div>
         </div>
+        <div className="end-call-container">
+        <img
+          src={endcallicon}
+          alt="End Call"
+          className="end-call-icon"
+          onClick={handleEndCall}
+        />
+      </div>
+      <ToastContainer position="top-center" theme="colored" autoClose={2000} closeButton={false} style={{
+         height: 'fit-content',
+          }}/>
+    </div>
     );
 };
 

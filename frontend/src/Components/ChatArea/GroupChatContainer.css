@@ -57,11 +57,12 @@
   }
   .messages-chat1{
     max-width: 80%;
-    background-color: black;
+    background-color: white;
+    color:black
   }
   .messages-chat2{
     max-width: 80%;
-    background-color: #4c4c4c;
+    background-color: #8E4585;
   }
   .input-container {
     width: 100%;
