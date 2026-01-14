@@ -9,6 +9,8 @@ const PORT=3000;
 const socket=require("socket.io")
 const { RtmTokenBuilder, RtmRole } = require('agora-access-token');
 
+const uploadOnCloudinary = require("./config/cloudinary.js");
+
 const authenticate=require("./middlewares/authenticate.js")
 const AGORA_APP_ID = "7f251e436fa84451a507453ec054fcc2";
 const AGORA_APP_CERTIFICATE = "7386a06b64fe4aa1b46ee334f7e712af";
@@ -63,10 +65,19 @@ app.post("/upload-image/:id",upload.single("image"),async(req,res)=>{
     console.log(req.body);
     const imageName=req.file.filename;
     const id=req.params.id
+
+    const imgs = req.file;
+    if(!imgs){
+        return res.status(400).json({ msg: "Image required" });
+    }
+
+    const imagePath = req.file.path;
+    const imgRes = await uploadOnCloudinary(imagePath);
+    const image = imgRes.url;
     
     try {
         const tm= await User.findByIdAndUpdate(id,
-            {$set:{image:imageName}},
+            {$set:{image:image}},
             {new:true});
         res.send("ok");
     } catch (error) {
@@ -77,7 +88,18 @@ app.post("/upload-image/:id",upload.single("image"),async(req,res)=>{
 app.post('/sendpost',authenticate,upload.single("image"),async(req,res)=>{
     try{
       const fromUser=req.userID
-      const image=req.file.filename
+
+      const imgs = req.file;
+      if(!imgs){
+         return res.status(400).json({ msg: "Image required" });
+      }
+
+      const imagePath = req.file.path;
+
+      const imgRes = await uploadOnCloudinary(imagePath);
+      console.log(imgRes.url);
+      const image = imgRes.url;
+
       const title=req.body.title
       const currUser=await User.findOne({_id:fromUser})
       const name=currUser.name
@@ -92,7 +114,16 @@ app.put('/updatepost',authenticate,upload.single("image"),async(req,res)=>{
     try{
        const postId=req.body.postId
        const title=req.body.title
-       const image=req.file.filename
+       const imgs = req.file;
+       if(!imgs){
+         return res.status(400).json({ msg: "Image required" });
+       }
+
+       const imagePath = req.file.path;
+
+       const imgRes = await uploadOnCloudinary(imagePath);
+       console.log(imgRes.url);
+       const image = imgRes.url;
        const updatePost = await Post.findByIdAndUpdate(postId, { title: title, image: image }, { new: true });
 
        res.status(200).json({msg:updatePost})
