@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import "../Scss/VideoCall.scss";
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../store/auth';
+import { useAuth } from '../store/Auth';
 import endcallicon from "../image/endcallicon.png"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

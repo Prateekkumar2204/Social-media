@@ -1,206 +1,213 @@
 // friends.jsx
-import React, { useState ,useRef,useEffect} from 'react';
-import '../Scss/Chat.scss';
+import React, { useState, useRef, useEffect } from "react";
+import "../Scss/Chat.scss";
 import room from "../image/icons8-video-call-50 (1).png";
-import { useAuth } from '../store/auth.jsx';
-import {io} from "socket.io-client"
-import Welcome from '../Components/ChatArea/Welcome.jsx'
-import ChatContainer from '../Components/ChatArea/ChatContainer.jsx'
-import { BsEmojiSmileFill } from "react-icons/bs";
-import { IoMdSend } from "react-icons/io";
-import RoomPop from "../Components/mainArea/RoomPopUp.jsx"
+import { useAuth } from "../store/auth.jsx";
+import Welcome from "../Components/ChatArea/Welcome.jsx";
+import ChatContainer from "../Components/ChatArea/ChatContainer.jsx";
+import RoomPop from "../Components/mainArea/RoomPopUp.jsx";
 
-  const Friends = () => {
-  const [currFriend, setCurrFriend] = useState([])
-  const [currChat, setCurrChat] = useState(undefined)
+const Friends = () => {
+  const [currFriend, setCurrFriend] = useState([]);
+  const [currChat, setCurrChat] = useState(undefined);
   const [msg, setMsg] = useState("");
-  //const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [currFriendChat,setCurrFriendChat]=useState([])
-  const [arrivalmsg,setArrivalmsg]=useState([])
-  const [RoomPopUp, setRoomPopUp]=useState(false)
+  const [currFriendChat, setCurrFriendChat] = useState([]);
+  const [arrivalmsg, setArrivalmsg] = useState(null);
+  const [RoomPopUp, setRoomPopUp] = useState(false);
   const scrollRef = useRef();
 
-  const sendChat = (event) => {
-    
-  if (msg.length > 0) {
-    handleSendMsg(msg);
-    setMsg("");
-  }
-  };
-  
-  
-  const { token,setUser,user,socket } = useAuth()
-  console.log(user)
-  console.log(token)
-  const id = user._id
+  const { token, user, socket } = useAuth();
+  const id = user?._id;
 
-  useEffect(()=>{
-   
-    console.log(socket)
-    //socket.emit("add-user",id)
-    if(socket){
-      socket.emit("add-user", user._id)
-      socket.on("msg-receive",(msg)=>{
-        console.log(msg)
-        setArrivalmsg({fromUser:false,message:msg.message})
-      })
-      socket.on("video-call-receive",(msg)=>{
-        console.log(msg)
-        window.location=`videocall?room=${msg.message}`
-      })
+  /* ---------------- SOCKET SETUP ---------------- */
+  useEffect(() => {
+    if (socket && user?._id) {
+      socket.emit("add-user", user._id);
+
+      socket.on("msg-receive", (msg) => {
+        setArrivalmsg({ fromUser: false, message: msg.message });
+      });
+
+      socket.on("video-call-receive", (msg) => {
+        window.location = `videocall?room=${msg.message}`;
+      });
     }
-    console.log("here i am boii")
-  },[])
+  }, [socket, user]);
 
+  /* ---------------- AUTO SCROLL ---------------- */
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [msg]);
+  }, [currFriendChat]);
 
-  const sendMessage=async(e)=>{
-    e.preventDefault()
-    try {
-      const response = await fetch(`http://localhost:3000/sendmessage`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          ide:currChat,
-          content:msg
-        })
-      })
-      if (response) {
-        const data = await response.json()
-        console.log("all done bhai")
-        socket.emit("send-msg",{
-          to:currChat,
-          from:id,
-          message:msg
-        })
-        setCurrFriendChat([...currFriendChat,{fromUser:true,message:msg}])
+  /* ---------------- RECEIVE MESSAGE ---------------- */
+  useEffect(() => {
+    arrivalmsg &&
+      setCurrFriendChat((prev) => [...prev, arrivalmsg]);
+  }, [arrivalmsg]);
 
+  /* ---------------- SEND MESSAGE ---------------- */
+  const sendMessage = async (e) => {
+    e.preventDefault();
 
-      }
-    } catch (error) {
-      console.log(`${error}`)
-    }
-  }
-  useEffect(()=>{
-    
-  },[])
+    if (!msg.trim()) return;
 
-  useEffect(()=>{
-       arrivalmsg && setCurrFriendChat((prevChat) => [...prevChat, arrivalmsg])
-  },[arrivalmsg])
+    await fetch("http://localhost:3000/sendmessage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        ide: currChat,
+        content: msg,
+      }),
+    });
 
-  const chatFriend=async(ide)=>{
-    setCurrChat(ide)
+    socket.emit("send-msg", {
+      to: currChat,
+      from: id,
+      message: msg,
+    });
 
-    try {
-      const response = await fetch(`http://localhost:3000/getmessage`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          ide
-        })
-      })
-      if (response) {
-        const data = await response.json()
-        let obj = data.msg
-        console.log(obj)
-        setCurrFriendChat(obj)
-      }
-    } catch (error) {
-      console.log(`${error}`)
-    }
-  }
+    setCurrFriendChat((prev) => [
+      ...prev,
+      { fromUser: true, message: msg },
+    ]);
+    setMsg("");
+  };
+
+  /* ---------------- LOAD CHAT ---------------- */
+  const chatFriend = async (ide) => {
+    setCurrChat(ide);
+    setCurrFriendChat([]); // reset
+
+    const response = await fetch("http://localhost:3000/getmessage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ ide }),
+    });
+
+    const data = await response.json();
+    setCurrFriendChat(data.msg || []);
+  };
+
+  /* ---------------- LOAD FRIENDS ---------------- */
   const firstRender = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/myfriends`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      if (response) {
-        const data = await response.json()
-        //socket=io(http://localhost:5173)
-        socket.emit("add-user", user._id)
-        let obj = data.msg
-        console.log(obj)
-        setCurrFriend(obj)
-      }
-    } catch (error) {
-      console.log(`${error}`)
-    }
-  }
-  function handleRoom(){
-    setRoomPopUp(true);
-  }
+    const response = await fetch("http://localhost:3000/myfriends", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  React.useEffect(() => {
-    firstRender()
-  }, [])
+    const data = await response.json();
+    setCurrFriend(data.msg || []);
+  };
 
+  useEffect(() => {
+    firstRender();
+  }, []);
+
+  /* ---------------- UI ---------------- */
   return (
     <div className="upper-container">
-      {RoomPopUp && <RoomPop setRoomPopUp={setRoomPopUp} socket={socket} currChat={currChat}/>}
+      {RoomPopUp && (
+        <RoomPop
+          setRoomPopUp={setRoomPopUp}
+          socket={socket}
+          currChat={currChat}
+        />
+      )}
+
       <div className="upper-container-friend">
+        {/* ---------------- LEFT FRIEND LIST ---------------- */}
         <div className="left-friend">
           <div className="form-group">
             <div className="timer-area-text2">FRIENDS</div>
           </div>
-          
-            <div className="friends-area-container" >
-              <div className="friends-area" >
-                {currFriend.map((friend, index) => (
-                  <div key={index} className="search-box search-friend-out" style={{ backgroundColor: "#E6DFF0", color:"black", marginTop: "10px" }} onClick={()=>chatFriend(friend._id)}>
-                    <div className="search-out">
-                      <div className="search-item">{friend.name}</div>
-                      <div className="search-item">{friend.email}</div>
-                    </div>
-                    <button
-                      type="button"
-                      className="btn btn-dark search-button"
-                      onClick={handleRoom}
-                    >
-                      <img src={room} alt="Search" className="medal" />
-                    </button>
+
+          <div className="friends-area-container">
+            <div className="friends-area">
+              {currFriend.map((friend, index) => (
+                <div
+                  key={index}
+                  className="search-box search-friend-out"
+                  style={{
+                    backgroundColor: "#E6DFF0",
+                    color: "black",
+                    marginTop: "10px",
+                  }}
+                  onClick={() => chatFriend(friend._id)}
+                >
+                  <div className="search-out">
+                    <div className="search-item">{friend.name}</div>
+                    <div className="search-item">{friend.email}</div>
                   </div>
-                ))}
-              </div>
+                  <button
+                    type="button"
+                    className="btn btn-dark search-button"
+                    onClick={() => setRoomPopUp(true)}
+                  >
+                    <img src={room} alt="Video Call" className="medal" />
+                  </button>
+                </div>
+              ))}
             </div>
+          </div>
         </div>
+
+        {/* ---------------- RIGHT CHAT AREA ---------------- */}
         <div className="right-friend">
           <div className="heading">CHAT</div>
-          <div className="friends-area-container right-friend-request" style={{ backgroundColor: "#E6DFF0" }} ref={scrollRef}>
-              {currChat ? <ChatContainer currFriendChat={currFriendChat} socket={socket}/> : <Welcome />}
+
+          <div
+            className="friends-area-container right-friend-request"
+            style={{ backgroundColor: "#E6DFF0" }}
+            ref={scrollRef}
+          >
+            {!currChat ? (
+              <Welcome />
+            ) : currFriendChat.length === 0 ? (
+              // 🟢 EMPTY STATE ONLY AFTER OPENING CHAT
+              <div className="empty-state">
+                <img
+                  src="https://png.pngtree.com/png-clipart/20210826/ourmid/pngtree-purple-linear-filled-communication-right-click-message-sending-icon-design-png-image_3455147.jpg"
+                  alt="Start conversation"
+                  className="empty-image"
+                />
+                <h4>Start your conversation</h4>
+              </div>
+            ) : (
+              <ChatContainer
+                currFriendChat={currFriendChat}
+                socket={socket}
+              />
+            )}
           </div>
-          {currChat && <div className="button-container">
-            <form className="input-container" onSubmit={(event) => sendChat(event)}>
-                <div className="form-group">
+
+          {/* ---------------- MESSAGE INPUT ---------------- */}
+          {currChat && (
+            <div className="button-container">
+              <form className="input-container" onSubmit={sendMessage}>
                 <input
                   type="text"
                   className="form-control input-message input-msgg"
-                  placeholder="Type Message here"
+                  placeholder="Type message"
                   value={msg}
                   onChange={(e) => setMsg(e.target.value)}
                 />
                 <button
-                  type="button"
-                  className="btn btn-dark search-button submit-button"
-                  style={{ backgroundColor: "#36013f"}}
-                  onClick={sendMessage}
+                  type="submit"
+                  className="btn btn-dark submit-button"
                 >
                   SEND
                 </button>
-              </div>
-            </form>
-          </div>}
+              </form>
+            </div>
+          )}
         </div>
       </div>
     </div>
