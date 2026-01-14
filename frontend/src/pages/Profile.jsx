@@ -35,7 +35,7 @@ const Profile = () => {
           <h2 className="font-weight-bold profiletext mb-3 profiletext2" style={{ backgroundColor: '#735DA5', color:'#EDE7F6'}}>Profile</h2>
           <div className="leftprofile-top">
             <div className="image">
-              <img src={`http://localhost:3000/images/${user.image}`} />
+              <img src={user.image} />
             </div>
           </div>
           <div className="leftprofile-bottom">

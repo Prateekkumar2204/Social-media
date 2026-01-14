@@ -75,8 +75,20 @@ router.post('/create-post',async(req,res)=>{
       const {title,content}=req.body
       console.log(title)
       console.log(content)
+
+      const imgs = req.file;
+      if(!imgs){
+         return res.status(400).json({ msg: "Image required" });
+      }
+
+      const imagePath = req.file.path;
+
+      const imgRes = await uploadOnCloudinary(imagePath);
+      console.log(imgRes);
       const post=new Post({title,content})
       //console.log("11")
+
+
       const postData=await post.save();
       if(!postData){
          console.log ("here")

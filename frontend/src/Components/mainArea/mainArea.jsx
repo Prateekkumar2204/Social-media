@@ -132,7 +132,7 @@ export default function MainArea() {
             <div key={index} className='post'>
               <div className='user-name'>{message.post.originalName}</div>
               <div className='post-image'>
-                <img src={`http://localhost:3000/images/${message.post.image}`} style={{ width: '80%' }} alt="post"></img>
+                <img src={message.post.image} style={{ width: '80%' }} alt="post"></img>
               </div>
               <div className='user-button'>
                 <div className='like-comment'>
