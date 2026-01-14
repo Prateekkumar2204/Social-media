@@ -28,6 +28,7 @@ const Modal = (props) => {
   }
   const submit = async (e) => {
     e.preventDefault();
+    console.log("sending");
     const formdata = new FormData();
     formdata.append('image', image);
     formdata.append('title', formData.title);
