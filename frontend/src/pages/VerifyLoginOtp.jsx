@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../store/Auth";
+import { useAuth } from "../store/auth";
 import "../Scss/VerifyOtp.scss"; // Import the new styles
 
 export default function VerifyLoginOtp() {

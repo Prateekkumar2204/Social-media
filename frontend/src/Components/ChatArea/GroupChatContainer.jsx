@@ -6,8 +6,8 @@ const GroupChatContainer = (props) => {
     console.log(messages)
     //console.log("check")
   return (
-    <div className="friends-area-container right-friend-request2">
-            <div className="friends-area">
+    <div className="friends-area-container right-friend-request99">
+            <div className="friends-area99">
               {messages.map((messages, index) => (
                 <div className={`message-inside ${messages.fromUser ? "sended" : "received" }`} key={index}>
                 <div key={index} className={`search-box messages-chat${messages.fromUser ? "2" : "1" } search-friend-out ${messages.fromUser ? "sended" : "received" }`}>

@@ -5,7 +5,7 @@ import goldmedal from "../image/goldmedal.png"
 import silvermedal from "../image/silvermedal.png"
 import bronzemedal from "../image/bronzemedal.png"
 import award from "../image/award.png"
-import { useAuth } from '../store/Auth';
+import { useAuth } from '../store/auth';
 
 const Leaderboard = () => {
   // Mock data (replace this with actual data fetching)

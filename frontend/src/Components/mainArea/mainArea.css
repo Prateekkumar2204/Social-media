@@ -11,12 +11,15 @@
 }
 
 .leftPane {
+    position: fixed;
+    top: 10px;
+    left: 100px;
+    width: 300px;
     display: flex;
-    justify-content: center;
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 1;
-    grid-row-end: 5;
+    grid-row-end: 1;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     padding: 0px 10px;
@@ -25,6 +28,7 @@
     flex-direction: column;
     background-color: #F5F5F5;
 }
+ 
 
 .stageArea {
     position: relative;
@@ -32,13 +36,13 @@
     grid-column-end: 6;
     grid-row-start: 1;
     grid-row-end: 7;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 6px rgba(114, 22, 22, 0.3);
     border-radius: 10px;
-    background-color: #F5F5F5;
+    background-color: #f6efef;
     padding: 10px;
     overflow-y: auto;
-    /* Add this line to make it scrollable vertically */
-    max-height: 100%;
+    height: 100vh;
+
 }
 
 .stageArea::-webkit-scrollbar {

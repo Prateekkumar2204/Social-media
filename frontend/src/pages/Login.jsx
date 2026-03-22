@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../store/Auth";
+import { useAuth } from "../store/auth";
 import "../Scss/Login.scss";
 
 export default function Login() {
@@ -57,7 +57,7 @@ export default function Login() {
         <form onSubmit={handleSubmit} className="login-form">
           <h2 className="text-uppercase text-center loginheading">Sign in</h2>
 
-          <div className="form-outline mb-4">
+          <div className="form-outline mb-4 forminputemail">
             <input
               name="email"
               type="email"
@@ -68,7 +68,7 @@ export default function Login() {
             />
           </div>
 
-          <div className="form-outline mb-4">
+          <div className="form-outline mb-4 forminputpassword">
             <input
               name="password"
               type="password"
@@ -79,7 +79,7 @@ export default function Login() {
             />
           </div>
 
-          <button className="btn btn-dark btn-lg btn-block" type="submit">
+          <button className="btn btn-dark btn-lg btn-block loginbtn" type="submit">
             Login
           </button>
 

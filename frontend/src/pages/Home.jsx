@@ -7,24 +7,31 @@ import dummyData from "../data.js"
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const { LogoutUser, user } = useAuth()
-  console.log(user._id)
+  // Added isLoading from the context we updated earlier
+  const { LogoutUser, user, isLoading } = useAuth();
 
-  console.log(dummyData)
-
-  const logout = () => {
-    console.log("hello world")
-    LogoutUser()
-
-    navigate("/Login")
+  // 1. Handle the initial loading state
+  if (isLoading) {
+    return <div className="loading-screen">Loading MNNIT Chat...</div>;
   }
 
-  return (
+  // 2. Safely log user info. Using user?._id prevents the crash 
+  // if the user is not logged in or data hasn't arrived.
+  console.log("Current User ID:", user?._id);
+  console.log("Dummy Data:", dummyData);
 
+  const logout = () => {
+    console.log("Logging out...");
+    LogoutUser();
+    navigate("/Login");
+  };
+
+  return (
     <div className="mainHome">
-      <MainArea />
+      {/* If you need to pass user data to MainArea, do it here */}
+      <MainArea user={user} logout={logout} />
     </div>
-  )
+  );
 };
 
 export default HomePage;

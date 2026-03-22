@@ -1,4 +1,3 @@
-// friends.jsx
 import React, { useState, useRef, useEffect } from "react";
 import "../Scss/Chat.scss";
 import room from "../image/icons8-video-call-50 (1).png";
@@ -41,8 +40,7 @@ const Friends = () => {
 
   /* ---------------- RECEIVE MESSAGE ---------------- */
   useEffect(() => {
-    arrivalmsg &&
-      setCurrFriendChat((prev) => [...prev, arrivalmsg]);
+    arrivalmsg && setCurrFriendChat((prev) => [...prev, arrivalmsg]);
   }, [arrivalmsg]);
 
   /* ---------------- SEND MESSAGE ---------------- */
@@ -69,17 +67,14 @@ const Friends = () => {
       message: msg,
     });
 
-    setCurrFriendChat((prev) => [
-      ...prev,
-      { fromUser: true, message: msg },
-    ]);
+    setCurrFriendChat((prev) => [...prev, { fromUser: true, message: msg }]);
     setMsg("");
   };
 
   /* ---------------- LOAD CHAT ---------------- */
   const chatFriend = async (ide) => {
     setCurrChat(ide);
-    setCurrFriendChat([]); // reset
+    setCurrFriendChat([]);
 
     const response = await fetch("http://localhost:3000/getmessage", {
       method: "POST",
@@ -113,7 +108,7 @@ const Friends = () => {
 
   /* ---------------- UI ---------------- */
   return (
-    <div className="upper-container">
+    <div className="upper-container1">
       {RoomPopUp && (
         <RoomPop
           setRoomPopUp={setRoomPopUp}
@@ -122,19 +117,19 @@ const Friends = () => {
         />
       )}
 
-      <div className="upper-container-friend">
+      <div className="upper-container-friend1">
         {/* ---------------- LEFT FRIEND LIST ---------------- */}
-        <div className="left-friend">
-          <div className="form-group">
-            <div className="timer-area-text2">FRIENDS</div>
+        <div className="left-friend1">
+          <div className="form-group1">
+            <div className="timer-area-text21">FRIENDS</div>
           </div>
 
-          <div className="friends-area-container">
-            <div className="friends-area">
+          <div className="friends-area-container1">
+            <div className="friends-area1">
               {currFriend.map((friend, index) => (
                 <div
                   key={index}
-                  className="search-box search-friend-out"
+                  className="search-box1 search-friend-out1"
                   style={{
                     backgroundColor: "#E6DFF0",
                     color: "black",
@@ -142,16 +137,16 @@ const Friends = () => {
                   }}
                   onClick={() => chatFriend(friend._id)}
                 >
-                  <div className="search-out">
-                    <div className="search-item">{friend.name}</div>
-                    <div className="search-item">{friend.email}</div>
+                  <div className="search-out1">
+                    <div className="search-item1">{friend.name}</div>
+                    <div className="search-item1">{friend.email}</div>
                   </div>
                   <button
                     type="button"
-                    className="btn btn-dark search-button"
+                    className="btn btn-dark search-button1"
                     onClick={() => setRoomPopUp(true)}
                   >
-                    <img src={room} alt="Video Call" className="medal" />
+                    <img src={room} alt="Video Call" className="medal1" />
                   </button>
                 </div>
               ))}
@@ -160,23 +155,22 @@ const Friends = () => {
         </div>
 
         {/* ---------------- RIGHT CHAT AREA ---------------- */}
-        <div className="right-friend">
-          <div className="heading">CHAT</div>
+        <div className="right-friend3">
+          <div className="heading1">CHAT</div>
 
           <div
-            className="friends-area-container right-friend-request"
+            className="friends-area-container1 right-friend-request1"
             style={{ backgroundColor: "#E6DFF0" }}
             ref={scrollRef}
           >
             {!currChat ? (
               <Welcome />
             ) : currFriendChat.length === 0 ? (
-              // 🟢 EMPTY STATE ONLY AFTER OPENING CHAT
-              <div className="empty-state">
+              <div className="empty-state1">
                 <img
                   src="https://png.pngtree.com/png-clipart/20210826/ourmid/pngtree-purple-linear-filled-communication-right-click-message-sending-icon-design-png-image_3455147.jpg"
                   alt="Start conversation"
-                  className="empty-image"
+                  className="empty-image1"
                 />
                 <h4>Start your conversation</h4>
               </div>
@@ -190,18 +184,18 @@ const Friends = () => {
 
           {/* ---------------- MESSAGE INPUT ---------------- */}
           {currChat && (
-            <div className="button-container">
-              <form className="input-container" onSubmit={sendMessage}>
+            <div className="button-container1">
+              <form className="input-container1" onSubmit={sendMessage}>
                 <input
                   type="text"
-                  className="form-control input-message input-msgg"
+                  className="form-control input-message1 input-msgg1"
                   placeholder="Type message"
                   value={msg}
                   onChange={(e) => setMsg(e.target.value)}
                 />
                 <button
                   type="submit"
-                  className="btn btn-dark submit-button"
+                  className="btn btn-dark submit-button1"
                 >
                   SEND
                 </button>

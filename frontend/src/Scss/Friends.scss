@@ -1,21 +1,22 @@
-.upper-container {
-    padding: 40px 100px;
+.upper-container3 {
+  display: grid;
+    padding: 20px 100px;
+    height: 100%;
   }
   
-  .upper-container-friend {
+.upper-container-friend3 {
     display: grid;
-    grid-template-columns: repeat(3, 3fr);
-    grid-template-rows: repeat(6, 3fr);
-    row-gap: 10px;
-    column-gap: 10px;
-  }
+  grid-template-columns: 0.8fr 2.2fr;
+  gap: 0px;
+  min-height: calc(100vh - 50px);
+  padding:20px 20px 20px 20px;
+}
   
-  .left-friend {
+  .left-friend3 {
     display: flex;
-    grid-column-start: 1;
-    grid-column-end: 2;
-    grid-row-start: 1;
-    grid-row-end: 7;
+    grid-column-start: 2;
+    grid-column-end: 1;
+    min-height: 90vh;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     background-color: #F5F5F5;
@@ -24,15 +25,13 @@
     flex-direction: column;
   }
   
-  .right-friend {
-    position: relative;
-    grid-column-start: 2;
-    grid-column-end: 4;
-    grid-row-start: 1;
-    grid-row-end: 7;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    background: #323232;
+  .right-friend3{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
   }
   
   .form-group {
@@ -101,11 +100,12 @@
   .friends-search-out{
     height: fit-content;
   }
-  .friends-area-container {
-    max-height: 100%; /* Set a fixed height for the container */
-    overflow-y: auto; /* Enable vertical scrolling */
-    padding: 0px 10px;
-  }
+  .friends-area-container3{
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 10px;
+  min-height: 0;
+ }
   .search-friend-out{
     background-color: #735DA5;
     color: white;
@@ -113,17 +113,18 @@
   .showfriend.showfriend::-webkit-scrollbar{
     display:none
   }
-  .friends-area-container::-webkit-scrollbar{
+  .friends-area-container3::-webkit-scrollbar{
     display:none
   }
-  .right-friend{
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #F5F5F5;
-  }
+  .right-friend3 {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #F5F5F5;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  height: calc(100vh - 40px);
+}
   .heading{
     height: fit-content;
     display: flex;

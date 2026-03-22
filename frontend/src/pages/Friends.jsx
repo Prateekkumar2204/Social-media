@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import React, { useState } from 'react';
 import '../Scss/Friends.scss';
 import search1 from "../image/search1.png";
-import { useAuth } from '../store/Auth';
+import { useAuth } from '../store/auth';
 
 const Friends = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -192,9 +192,9 @@ const Friends = () => {
   }
 
   return (
-    <div className="upper-container">
-      <div className="upper-container-friend">
-        <div className="left-friend">
+    <div className="upper-container3">
+      <div className="upper-container-friend3">
+        <div className="left-friend3">
           <div className="form-group">
             <input
               type="text"
@@ -245,9 +245,9 @@ const Friends = () => {
             </div>
           )}
         </div>
-        <div className="right-friend">
+        <div className="right-friend3">
           <div className="heading">PENDING REQUESTS</div>
-          <div className="friends-area-container right-friend-request" style={{ backgroundColor: "#E6DFF0" }}>
+          <div className="friends-area-container3 right-friend-request3" style={{ backgroundColor: "#E6DFF0" }}>
             <div className="friends-area" >
               {currPending.map((friend, index) => (
                 <div key={index} className="search-box search-friend-out" style={{ backgroundColor: "#E6DFF0", color:"black" }}>

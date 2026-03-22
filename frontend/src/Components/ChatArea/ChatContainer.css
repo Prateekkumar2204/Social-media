@@ -134,3 +134,15 @@
       }
     }
 }
+
+.right-friend-request11 {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.friends-area11 {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 10px;
+}

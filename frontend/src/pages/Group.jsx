@@ -1,66 +1,60 @@
-// friends.jsx
-import React, { useState ,useRef,useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../Scss/Group.scss';
 import search1 from "../image/search1.png";
-import { useAuth } from '../store/Auth';
-import Welcome from '../Components/ChatArea/Welcome.jsx'
-import GroupChatContainer from '../Components/ChatArea/GroupChatContainer.jsx'
+import { useAuth } from '../store/auth';
+import Welcome from '../Components/ChatArea/Welcome.jsx';
+import GroupChatContainer from '../Components/ChatArea/GroupChatContainer.jsx';
 import { BsEmojiSmileFill } from "react-icons/bs";
 import { IoMdSend } from "react-icons/io";
-import Modal from "../Components/mainArea/GroupCreate.jsx"
-import Modal2 from "../Components/mainArea/GroupUpdate.jsx"
+import Modal from "../Components/mainArea/GroupCreate.jsx";
+import Modal2 from "../Components/mainArea/GroupUpdate.jsx";
 
-  const Groups = () => {
-  const [currFriend, setCurrFriend] = useState([])
-  const [currChat, setCurrChat] = useState(undefined)
+const Groups = () => {
+  const [currFriend, setCurrFriend] = useState([]);
+  const [currChat, setCurrChat] = useState(undefined);
   const [msg, setMsg] = useState("");
-  const [currFriendChat,setCurrFriendChat]=useState([])
-  const [arrivalmsg,setArrivalmsg]=useState([])
-  const [groupadded,setGroupAdded]=useState(false)
-  const [toBeAdded,setToBeAdded]=useState([])
-  const [addMem,setAddMem]=useState(false)
-  const [removeMem,setRemoveMem]=useState(false)
-  const [membersToBeAdded,setMembersToBeAdded]=useState([])
-  const [membersToBeDeleted,setMembersToBeDeleted]=useState([])
-  const [currGroup,setCurrGroup]=useState()
+  const [currFriendChat, setCurrFriendChat] = useState([]);
+  const [arrivalmsg, setArrivalmsg] = useState(null);
+  const [groupadded, setGroupAdded] = useState(false);
+  const [toBeAdded, setToBeAdded] = useState([]);
+  const [addMem, setAddMem] = useState(false);
+  const [removeMem, setRemoveMem] = useState(false);
+  const [membersToBeAdded, setMembersToBeAdded] = useState([]);
+  const [membersToBeDeleted, setMembersToBeDeleted] = useState([]);
+  const [currGroup, setCurrGroup] = useState();
 
   const scrollRef = useRef();
 
-  const sendChat = (event) => {
-    
-  if (msg.length > 0) {
-    handleSendMsg(msg);
-    setMsg("");
-  }
-  };
-  
-  //const  socket=new io("http://localhost:3000")
-  const { token,setUser,user,socket} = useAuth()
-  console.log(user)
-  console.log(token)
-  const id = user._id
+  const { token, setUser, user, socket } = useAuth();
+  const id = user?._id;
 
-  //socket.emit("add-grp-user", user._id)
-  useEffect(()=>{
-   
-    console.log(socket)
-    socket.emit("add-grp-user",user.id)
-      
-      socket.on("msg-grp-receive",(msg)=>{
-        console.log(msg.to)
-        console.log("herreeeiam boiiss")
-        console.log(currChat+";lakjflakshfldsnfkasn")
-        
-        console.log(msg)
-        setArrivalmsg({fromUser:false,message:msg.message,name:msg.name})
-        
-      })
-    
-    console.log("here i am boii55")
-  },[])
-  useEffect(()=>{
-    arrivalmsg && setCurrFriendChat((prevChat) => [...prevChat, arrivalmsg])
-   },[arrivalmsg])
+  useEffect(() => {
+    if (!socket || !user?._id) return;
+
+    socket.emit("add-grp-user", user._id);
+
+    const handleGroupMsg = (incomingMsg) => {
+      setArrivalmsg({
+        fromUser: false,
+        message: incomingMsg.message,
+        name: incomingMsg.name
+      });
+    };
+
+    socket.on("msg-grp-receive", handleGroupMsg);
+
+    return () => {
+      socket.off("msg-grp-receive", handleGroupMsg);
+    };
+  }, [socket, user]);
+
+  useEffect(() => {
+    if (arrivalmsg) {
+      setCurrFriendChat((prevChat) => [...prevChat, arrivalmsg]);
+    }
+  }, [arrivalmsg]);
+
+
   const firstRender = async () => {
     try {
       const response = await fetch(`http://localhost:3000/getgroups`, {
@@ -71,7 +65,6 @@ import Modal2 from "../Components/mainArea/GroupUpdate.jsx"
       })
       if (response) {
         const data = await response.json()
-        //socket=io(http://localhost:5173)
         let obj = data.msg
         console.log(obj)
         setCurrFriend(obj)
@@ -81,6 +74,7 @@ import Modal2 from "../Components/mainArea/GroupUpdate.jsx"
       console.log(`${error}`)
     }
   }
+
   const addition=async(ide)=>{
     let groupId=ide
     try {
@@ -113,6 +107,7 @@ import Modal2 from "../Components/mainArea/GroupUpdate.jsx"
       console.log(`${error}`)
     }
   }
+
   const subtraction=async(ide)=>{
     let groupId=ide
     try {
@@ -145,6 +140,7 @@ import Modal2 from "../Components/mainArea/GroupUpdate.jsx"
       console.log(`${error}`)
     }
   }
+
   const chatFriend=async(ide)=>{
     setCurrChat(ide)
     let groupId=ide
@@ -169,6 +165,7 @@ import Modal2 from "../Components/mainArea/GroupUpdate.jsx"
       console.log(`${error}`)
     }
   }
+
   const addgroup = async () => {
     try {
       const res = await fetch(`http://localhost:3000/getMembersToAdded1`, {
@@ -199,14 +196,13 @@ import Modal2 from "../Components/mainArea/GroupUpdate.jsx"
     } catch (err) {
       console.log("Error:", err.message);
     }
-};
+  };
   
-const sendGroupChat = (event) => {
-    
-  if (msg.length > 0) {
-    handleSendMsg(msg);
-    setMsg("");
-  }
+  const sendGroupChat = (event) => {
+    if (msg.length > 0) {
+      handleSendMsg(msg);
+      setMsg("");
+    }
   };
 
   const sendMessage=async(e)=>{
@@ -234,39 +230,41 @@ const sendGroupChat = (event) => {
           name:user.name
         })
         setCurrFriendChat([...currFriendChat,{fromUser:true,message:msg,name:user.name}])
-
-
       }
     } catch (error) {
       console.log(`${error}`)
     }
   }
+
   function addmem(ide){
     addition(ide)
     setCurrGroup(ide)
     setAddMem(true)
-
   }
+
   function removemem(ide){
     subtraction(ide)
     setCurrGroup(ide)
     setRemoveMem(true)
   }
+
   React.useEffect(() => {
     firstRender()
   }, [])
-  // useEffect(()=>{
-  //   arrivalmsg && setCurrFriendChat((prevChat) => [...prevChat, arrivalmsg])
-  //  },[arrivalmsg])
+
+  if (!user || !socket) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="upper-container">
-      <div className="upper-container-friend">
-        <div className="left-friend">
-          <div className="form-group group-form">
-            <div className="timer-area-textgroup2">
-                <div className='friendTab'>GROUP</div>
+    <div className="upper-container44">
+      <div className="upper-container-friend44">
+        <div className="left-friend44">
+          <div className="form-group44 group-form44">
+            <div className="timer-area-textgroup44">
+                <div className='friendTab44'>GROUP</div>
                 <button 
-                    className="btn btn-dark search-button submit-button addGroup"
+                    className="btn btn-dark search-button44 submit-button44 addGroup44"
                     onClick={addgroup}
                 >
                 +
@@ -274,49 +272,50 @@ const sendGroupChat = (event) => {
             </div>
           </div>
           
-            <div className="friends-area-container" >
+          <div className="friends-area-container44" >
             {groupadded && <Modal setGroupAdded={setGroupAdded} toBeAdded={toBeAdded} setToBeAdded={setToBeAdded} />}
             {addMem && <Modal2  currGroup={currGroup} addMem={addMem} removeMem={removeMem} setAddMem={setAddMem} setRemoveMem={setRemoveMem} toBeAdded={membersToBeAdded} setToBeAdded={setMembersToBeAdded}/>}
             {removeMem && <Modal2 currGroup={currGroup} addMem={addMem} removeMem={removeMem} setRemoveMem={setRemoveMem} setAddMem={setAddMem} toBeAdded={membersToBeDeleted} setToBeAdded={setMembersToBeDeleted}/>}
-              <div className="friends-area" >
-                {currFriend.map((friend, index) => (
-                  <div key={index} style={{ backgroundColor: "#E6DFF0", color:"black", marginTop: "10px" }} className="search-box search-friend-out" onClick={()=>chatFriend(friend._id)}>
-                    <div className="search-out2">
-                      <div className="search-item2">{friend.name}</div>
-                      {user._id===friend.creator_id && 
-                        <div className='add-removebtn'>
-                      
-                      <button
-                        type="button"
-                        className="btn btn-success submit-button2"
-                        onClick={()=>addmem(friend._id)}
-                      >
-                        ADD
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-danger submit-button2"
-                        onClick={()=>removemem(friend._id)}
-                      >
-                        REMOVE
-                      </button>
+            
+            <div className="friends-area44" >
+              {currFriend.map((friend, index) => (
+                <div key={index} style={{ backgroundColor: "#E6DFF0", color:"black", marginTop: "10px" }} className="search-box44 search-friend-out44" onClick={()=>chatFriend(friend._id)}>
+                  <div className="search-out44">
+                    <div className="search-item44">{friend.name}</div>
+                    {user._id===friend.creator_id && 
+                      <div className='add-removebtn44'>
+                        <button
+                          type="button"
+                          className="btn btn-success submit-button244"
+                          onClick={()=>addmem(friend._id)}
+                        >
+                          ADD
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-danger submit-button44"
+                          onClick={()=>removemem(friend._id)}
+                        >
+                          REMOVE
+                        </button>
                       </div>
                     }
-                      
-                    </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
+          </div>
         </div>
-        <div className="right-friend">
-          <div className="heading">GROUP CHAT</div>
-          <div className="friends-area-container right-friend-request" style={{ backgroundColor: "#E6DFF0", color:"black" }} ref={scrollRef}>
+
+        <div className="right-friend44">
+          <div className="heading44">GROUP CHAT</div>
+          <div className="friends-area-container44 right-friend-request44" style={{ backgroundColor: "#E6DFF0", color:"black" }} ref={scrollRef}>
               {currChat ? <GroupChatContainer currFriendChat={currFriendChat}/> : <Welcome />}
           </div>
-          {currChat && <div className="button-container">
-            <form className="input-container" onSubmit={(event) => sendGroupChat(event)}>
-                <div className="form-group">
+
+          {currChat && <div className="button-container44">
+            <form className="input-container44" onSubmit={(event) => sendGroupChat(event)}>
+              <div className="form-group44">
                 <input
                   type="text"
                   className="form-control input-message input-msgg"
@@ -327,7 +326,7 @@ const sendGroupChat = (event) => {
                 <button
                   type="button"
                   style={{ backgroundColor: "#36013f"}}
-                  className="btn btn-dark search-button submit-button"
+                  className="btn btn-dark search-button44 submit-button44"
                   onClick={sendMessage}
                 >
                   SEND

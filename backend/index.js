@@ -144,14 +144,15 @@ app.get("/",(req,res)=>{
 const server=app.listen(PORT,()=>{
     console.log(`app is running on ${PORT}`)
 })
+
+/////////////////socket//////////////
 const io = socket(server, {
     cors: {
       origin: "*",
       credentials: true,
     },
   });
-  
- 
+
 global.onlineUsers = new Map();
 global.onlineGroupUsers = new Map(); 
 io.on("connection", (socket) => {
@@ -164,6 +165,7 @@ io.on("connection", (socket) => {
         console.log(userId)
         console.log(socket.id)
     });
+    // this is below is waste doing the same task
     socket.on("add-grp-user", (userId) => {
         console.log("User added:", userId);
         console.log("bbbb")
@@ -208,5 +210,3 @@ io.on("connection", (socket) => {
         
     });
 });
-
-

@@ -1,29 +1,35 @@
-.upper-container {
-    padding: 40px 100px;
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+.upper-container44 {
+  display: grid;
+    padding: 20px 100px;
+    height: 100%;
   }
   
-  .upper-container-friend {
+.upper-container-friend44 {
     display: grid;
-    grid-template-columns: repeat(3, 3fr);
-    grid-template-rows: repeat(6, 3fr);
-    row-gap: 10px;
-    column-gap: 10px;
-  }
-  .friendTab{
+  grid-template-columns: 0.8fr 2.2fr;
+  gap: 0px;
+  min-height: calc(100vh - 50px);
+  padding:20px 20px 20px 20px;
+}
+  .friendTab44{
     display: flex;
     align-items: center;
     margin-left: 10px;
   }
-  .addGroup{
+  .addGroup44{
     font-size: 30px;
   }
 
-  .left-friend {
+  .left-friend44 {
     display: flex;
-    grid-column-start: 1;
-    grid-column-end: 2;
-    grid-row-start: 1;
-    grid-row-end: 7;
+    grid-column-start: 2;
+    grid-column-end: 1;
+    min-height: 90vh;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     background-color: #F5F5F5;
@@ -32,18 +38,20 @@
     flex-direction: column;
   }
   
-  .right-friend {
-    position: relative;
-    grid-column-start: 2;
-    grid-column-end: 4;
-    grid-row-start: 1;
-    grid-row-end: 7;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    background: #323232;
-  }
+ .right-friend44 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  background-color: white;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 10px;
+}
   
-  .group-form {
+  
+  .form-group44 {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -51,13 +59,13 @@
     padding: 0px 10px;
   }
   
-  .search-button {
+  .search-button44 {
     width: fit-content;
     margin-left: 5px;
     background-color: #36013f;
   }
   
-  .showfriend {
+  .showfriend44 {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -69,12 +77,12 @@
     color: white;
   }
   
-  .search-item2 {
+  .search-item44 {
     height: fit-content;
     font-size: 20px;
   }
   
-  .search-box {
+  .search-box44 {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -84,60 +92,60 @@
     padding: 10px;
     margin: 5px 0px;
   }
-  .request-button{
+  .request-button44{
     width: fit-content;
   }
-  .add-removebtn{
+  .add-removebtn44{
     display: flex;
     width: fit-content;
     gap: 5px;
   }
 
-  .search-out2{
+  .search-out44{
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .friends-area{
+  .friends-area44{
     margin-top: 10px;
-    height: fit-content;
+    height: 100%;
     background: none;
   }
-  .remove-button{
+  .remove-button44{
     width: fit-content;
     height: fit-content;
   }
-  .friends-box{
+  .friends-box44{
     height:fit-content
   }
-  .friends-search-out{
+  .friends-search-out44{
     height: fit-content;
   }
-  .friends-area-container {
-    max-height: 100%; /* Set a fixed height for the container */
+  .friends-area-container44 {
+    max-height: 300px; /* Set a fixed height for the container */
     overflow-y: auto; /* Enable vertical scrolling */
     padding: 0px 10px;
   }
-  .search-friend-out{
+  .search-friend-out44{
     background-color: black;
     color: white;
   }
   .showfriend.showfriend::-webkit-scrollbar{
     display:none
   }
-  .friends-area-container::-webkit-scrollbar{
+  .friends-area-container44::-webkit-scrollbar{
     display:none
   }
-  .right-friend{
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-  }
+.right-friend44 {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 10px;
+  background-color: white;
+  box-sizing: border-box;
+}
   
-  .heading{
+  .heading44{
     height: fit-content;
     display: flex;
     justify-content: center;
@@ -149,16 +157,16 @@
     border-radius: 10px;
     color: white;
   }
-  .requests{
+  .requests44{
     display: flex;
     justify-content: end;
     align-items: center;
   }
-  .request-button2{
+  .request-button44{
     margin: 0px 5px;
     width: fit-content;
   }
-  .timer-area-textgroup2{
+  .timer-area-textgroup44{
     background-color: #36013f;
     height: fit-content;
     width: 100%;
@@ -172,17 +180,20 @@
     height: 100%;
     padding: 0px 10px;
   }
-  .right-friend-request{
+  .right-friend-request44{
     margin-top: 10px;
+    min-height: calc(100vh - 200px);
     background-color: #F5F5F5;
   }
-  .right-friend-request{
+  .right-friend-request44{
     margin-top: 10px;
     background-color: #F5F5F5;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
   }
-  .input-container {
+  .input-container44 {
     width: 100%;
     border-radius: 2rem;
     display: flex;
@@ -206,7 +217,7 @@
         outline: none;
       }
     }
-    .submit-form {
+    .submit-form44{
       border-radius: 2rem;
       display: flex;
       justify-content: center;
@@ -217,7 +228,7 @@
     }
   }
  
-  .emoji-picker-react {
+  .emoji-picker-react44 {
     position: absolute;
     top: -350px;
     background-color: #080420;
@@ -243,11 +254,11 @@
       background-color: #080420;
     }
   }
-  .button-container {
+  .button-container44 {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: black;
+ 
     gap: 1rem;
     .emoji {
       position: relative;
@@ -259,13 +270,13 @@
     }
     height: 10%;
 }
-.input-field{
+.input-field44{
   width: 80%;
   color: black;
 }
-.submit-button2{
+.submit-button44{
   height: fit-content;
-  font-size: 15px;
+  font-size: 20px;
   width: fit-content;
 }
 
