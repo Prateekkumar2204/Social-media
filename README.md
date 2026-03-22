@@ -101,21 +101,3 @@ Important notices, updates, and college-related information can be shared in one
 
 ### 6. Community / Club Module
 Helps clubs and student groups interact with members more efficiently.
-
----
-
-## 📷 Screenshots
-
-> Add your screenshots here after uploading images to GitHub or using image links.
-
-```md
-## 📷 Screenshots
-
-### Home Page
-![Home Page](./screenshots/home.png)
-
-### Chat Interface
-![Chat](./screenshots/chat.png)
-
-### Video Call Popup
-![Video Call](./screenshots/video-call.png)
