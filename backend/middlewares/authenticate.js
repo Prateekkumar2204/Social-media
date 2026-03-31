@@ -1,36 +1,33 @@
-const jwt=require("jsonwebtoken")
-const User=require("../model/userSchema")
-const express = require('express');
-const cors = require('cors');
-const app = express();
-app.use(express.json())
-app.use(cors())
-const cookieParser = require("cookie-parser");
-app.use(cookieParser());
-// Use CORS middleware
+const jwt = require("jsonwebtoken");
+const User = require("../model/userSchema");
 
 const Authenticate = async (req, res, next) => {
-    const token = req.header('Authorization');
-   
-    if(!token){
-      return res.status(401).json({msg:"Invalid auth"})
+  const token = req.header("Authorization");
+
+  if (!token) {
+    return res.status(401).json({ msg: "Invalid auth" });
+  }
+
+  const jwtToken = token.replace("Bearer", "").trim();
+
+  try {
+    const isVerified = jwt.verify(jwtToken, process.env.JWT_SECRET);
+
+    const userData = await User.findById(isVerified._id);
+
+    if (!userData) {
+      return res.status(401).json({ msg: "Unauthorized access" });
     }
-    const jwtToken=token.replace("Bearer","").trim()
-    try{
-      const isVerified=jwt.verify(jwtToken,"IAMAWEBDEVELOPERANDIAMCOOLYOUKNOWSUBSCRIBEHELLOWORLDIAMHERE32CAHARACTERS")
-      
-      const userData=await User.findOne({_id:isVerified._id})
-      console.log(userData)
-      req.user=userData
-      req.token=token
-      req.userID=userData._id
-      console.log(req.userID)
-      next()
-   } catch (err) {
-      console.error('Authentication Error: here i am', err);
-      res.status(201).send("Unauthorized access");
-   }
+
+    req.user = userData;
+    req.token = jwtToken;
+    req.userID = userData._id;
+
+    next();
+  } catch (err) {
+    console.error("Authentication Error:", err.message);
+    return res.status(401).json({ msg: "Unauthorized access" });
+  }
 };
 
-
-module.exports=Authenticate
+module.exports = Authenticate;
