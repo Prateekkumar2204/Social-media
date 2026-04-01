@@ -15,6 +15,7 @@ export default function MainArea() {
   const { token } = useAuth()
   const [commentmsg, setCommentmsg] = React.useState("")
   const [currid, setCurrid] = React.useState("")
+  const [commentsByPost, setCommentsByPost] = React.useState({});
 
   const firstrender = async () => {
     try {
@@ -38,7 +39,22 @@ export default function MainArea() {
   useEffect(() => {
     firstrender()
   }, [])
+  const fetchCommentsByPost = async (postId) => {
+  try {
+    const response = await fetch(`http://localhost:3000/getcomments/${postId}`);
 
+    const data = await response.json();
+
+    if (response.ok) {
+      setCommentsByPost((prev) => ({
+        ...prev,
+        [postId]: data.comments
+      }));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
   const handlelike = async (ide) => {
     try {
       const response = await fetch("http://localhost:3000/addlike", {
@@ -60,28 +76,34 @@ export default function MainArea() {
       console.log("${error}")
     }
   }
-  const sendcomment = async (ide) => {
-    try {
-      const response = await fetch("http://localhost:3000/addcomment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          postId: ide,
-          content: commentmsg
-        })
+const sendcomment = async (ide) => {
+  try {
+    const response = await fetch("http://localhost:3000/addcommentv2", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        postId: ide,
+        content: commentmsg
       })
-      if (response) {
-        const data = await response.json()
-        console.log(data)
-        firstrender()
-      }
-    } catch (error) {
-      console.log("${error}")
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    if (response.ok) {
+      setcommentmsg("");
+      await firstrender();
+      await fetchCommentsByPost(ide);
+    } else {
+      alert(data.msg);
     }
+  } catch (error) {
+    console.log(error);
   }
+};
   const handledelete = async (ide) => {
     try {
       const response = await fetch("http://localhost:3000/deletepost", {
@@ -106,14 +128,14 @@ export default function MainArea() {
   const [commentSection, setCommentSection] = React.useState(null);
   const [popupshow, setpopupshow] = React.useState(false);
   const [updatePost, setUpdatepost] = React.useState(false);
-  function handleComment(index) {
-    if (commentSection === index) {
-      setCommentSection(null)
-    }
-    else {
-      setCommentSection(index)
-    }
+async function handleComment(index, postId) {
+  if (commentSection === index) {
+    setCommentSection(null);
+  } else {
+    setCommentSection(index);
+    await fetchCommentsByPost(postId);
   }
+}
   function handleUpdate(ide) {
     setUpdatepost(true);
     setCurrid(ide)
@@ -138,7 +160,7 @@ export default function MainArea() {
                 <div className='like-comment'>
                   <img src={message.isLiked ? redheart : like} alt="like" onClick={() => { handlelike(message.post._id) }}></img>
                   <div className='likecount'>{message.post.likes.length}</div>
-                  <img src={comment} onClick={() => handleComment(index)} alt="comment"></img>
+                  <img src={comment} onClick={() => handleComment(index, message.post._id)} alt="comment"></img>
                 </div>
                 {message.fromSelf && <div className='update-delete'>
                   <button type="button" className="btn btn-warning" onClick={() => { handleUpdate(message.post._id) }}>Update</button>
@@ -168,18 +190,20 @@ export default function MainArea() {
                     </button>
                   </div>
                 </form>
-                {commentSection === index && (
-                  <div className='scrollComment'>
-                    {message.post.comments.map((comment, commentIndex) => (
-                      <div key={commentIndex} className='outer-comment'>
-                        <div className='middle-comment'>
-                          {comment.user}
-                        </div>
-                        <div className='inner-comment'>
-                          {comment.content}
-                        </div>
+                {commentsByPost[message.post._id]?.length > 0 ? (
+                  commentsByPost[message.post._id].map((comment, commentIndex) => (
+                    <div key={commentIndex} className='outer-comment'>
+                      <div className='middle-comment'>
+                        {comment.userName}
                       </div>
-                    ))}
+                      <div className='inner-comment'>
+                        {comment.content}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className='outer-comment'>
+                    <div className='inner-comment'>No comments yet</div>
                   </div>
                 )}
               </div>
