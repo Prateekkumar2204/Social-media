@@ -21,7 +21,7 @@ const leftPane = (props) => {
 
     return (
         <>
-            <div className="timer-area-text">{user.name}</div>
+            <div className="timer-area-text w-100">{user.name}</div>
             <div class="d-inline-flex gap-1 left-toggle">
                 <button type="button" class="btn btn-outline-dark border-0 btn-lg text-left">
                     <Link to='/profile' style={{ textDecoration: 'none', color: 'inherit' }}>Profile</Link>

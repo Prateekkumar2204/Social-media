@@ -97,7 +97,9 @@
     align-items: center;
     gap: 2rem;
 }
-
+.comment{
+    font-weight: 600;;
+}
 .user-button {
     height: fit-content;
     display: flex;
@@ -154,6 +156,7 @@
     width: 80%;
     margin-bottom: 5px;
     font-weight: bold;
+    font-size: 18px;
 }
 
 .likecount {

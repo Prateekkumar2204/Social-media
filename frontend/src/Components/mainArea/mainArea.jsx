@@ -146,15 +146,15 @@ async function handleComment(index, postId) {
       {popupshow && <PopUp setpopupshow={setpopupshow} firstrender={firstrender} />}
       {updatePost && <PopUpUpdate setUpdatepost={setUpdatepost} currid={currid} firstrender={firstrender} />}
       <div className="containerArea">
-        <div className="leftPane">
+        <div className="leftPane m-2">
           <LeftPane setpopupshow={setpopupshow} />
         </div>
-        <div className="stageArea">
+        <div className="stageArea m-0.5">
           {messages.map((message, index) => (
             <div key={index} className='post'>
               <div className='user-name'>{message.post.originalName}</div>
               <div className='post-image'>
-                <img src={message.post.image} style={{ width: '80%' }} alt="post"></img>
+                <img src={message.post.image} style={{ width: '80%', height: '400px' }} alt="post"></img>
               </div>
               <div className='user-button'>
                 <div className='like-comment'>
@@ -167,9 +167,9 @@ async function handleComment(index, postId) {
                   <button type="button" className="btn btn-danger" onClick={() => { handledelete(message.post._id) }}>Delete</button>
                 </div>}
               </div>
-              <div className='caption'>
-                {message.post.originalName}: {message.post.title}
-              </div>
+              <div className="caption">
+  <span className="comment">{message.post.originalName}</span>: {message.post.title}
+</div>
               <div className='comments'>
                 <form className="input-container send-comment">
                   <div className="form-group">
@@ -192,7 +192,7 @@ async function handleComment(index, postId) {
                 </form>
                 {commentsByPost[message.post._id]?.length > 0 ? (
                   commentsByPost[message.post._id].map((comment, commentIndex) => (
-                    <div key={commentIndex} className='outer-comment'>
+                    <div key={commentIndex} className='outer-comment p-2'>
                       <div className='middle-comment'>
                         {comment.userName}
                       </div>
@@ -202,7 +202,7 @@ async function handleComment(index, postId) {
                     </div>
                   ))
                 ) : (
-                  <div className='outer-comment'>
+                  <div className='outer-comment p-2'>
                     <div className='inner-comment'>No comments yet</div>
                   </div>
                 )}

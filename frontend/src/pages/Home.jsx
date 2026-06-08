@@ -17,9 +17,6 @@ const HomePage = () => {
 
   // 2. Safely log user info. Using user?._id prevents the crash 
   // if the user is not logged in or data hasn't arrived.
-  console.log("Current User ID:", user?._id);
-  console.log("Dummy Data:", dummyData);
-
   const logout = () => {
     console.log("Logging out...");
     LogoutUser();

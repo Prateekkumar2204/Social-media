@@ -13,13 +13,19 @@ export default function Login() {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false); // ✅ added
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (loading) return; // ✅ prevent multiple clicks
+    setLoading(true);
+
     const { email, password } = formData;
 
     try {
@@ -46,8 +52,17 @@ export default function Login() {
         return;
       }
 
+      // ✅ SUCCESS LOGIN (if token exists)
+      if (data.token) {
+        setToken(data.token);
+        navigate("/");
+      }
+
     } catch (error) {
       console.error("Login error:", error);
+      alert("Something went wrong");
+    } finally {
+      setLoading(false); // ✅ re-enable button
     }
   };
 
@@ -79,8 +94,12 @@ export default function Login() {
             />
           </div>
 
-          <button className="btn btn-dark btn-lg btn-block loginbtn" type="submit">
-            Login
+          <button
+            className="btn btn-dark btn-lg btn-block w-auto loginbtn"
+            type="submit"
+            disabled={loading} // ✅ disable button
+          >
+            {loading ? "Logging in..." : "Login"} {/* ✅ dynamic text */}
           </button>
 
           <p className="text-center mt-4">

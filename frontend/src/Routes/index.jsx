@@ -38,10 +38,9 @@ export const router = createBrowserRouter([
     element: <Contactus />,
   },
 
-  // --- PRIVATE (PROTECTED) ROUTES ---
-  // {
-  //   element: <ProtectedRoute />, // All children below are now protected
-  //   children: [
+   {
+     element: <ProtectedRoute />, // All children below are now protected
+     children: [
       {
         path: "/",
         element: <Home />,
@@ -70,6 +69,6 @@ export const router = createBrowserRouter([
         path: "/videocall",
         element: <VideoCall />,
       },
-  //   ],
-  // },
+     ],
+   },
 ]);

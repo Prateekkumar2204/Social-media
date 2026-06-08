@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../api/AuthApi";
 import { Link } from "react-router-dom";
-
 import "../Scss/Register.scss";
 
 const Register = () => {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,41 +14,54 @@ const Register = () => {
     confirmPassword: "",
   });
 
+  const [loading, setLoading] = useState(false); // ✅ added
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    console.log(formData);
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("ok");
-    const { name, email, password, confirmPassword } = formData;
-    const cpassword = confirmPassword;
-    const res = await fetch("http://localhost:3000/Register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-        cpassword,
-      }),
-    });
-    const data = await res.json();
-    console.log(data);
-    if (!res.ok) {
-      window.alert(data.error || "Registration failed");
-    } else {
-      window.alert("OTP sent to your email");
-      navigate("/verify-otp", { state: { email } });
+
+    if (loading) return; // ✅ prevent multiple clicks
+    setLoading(true);
+
+    try {
+      const { name, email, password, confirmPassword } = formData;
+
+      const res = await fetch("http://localhost:3000/Register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          cpassword: confirmPassword,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        window.alert(data.error || "Registration failed");
+      } else {
+        window.alert("OTP sent to your email");
+        navigate("/verify-otp", { state: { email } });
+      }
+    } catch (err) {
+      console.error(err);
+      window.alert("Something went wrong");
+    } finally {
+      setLoading(false); // ✅ re-enable button
     }
   };
+
   return (
     <section>
-      <div className="whole" style={{ backgroundColor: "#735DA5" }}>
+      <div className="whole" style={{ backgroundColor: "#735DA5", minHeight: "100vh" }}>
         <div
           className="container register-pane"
           style={{ backgroundColor: "#D3C5E5" }}
@@ -58,11 +70,10 @@ const Register = () => {
             Create an account
           </h2>
 
-          <form onSubmit={handleSubmit} method="post">
+          <form onSubmit={handleSubmit}>
             <div className="form-outline mt-2 mb-4">
               <input
                 type="text"
-                id="form3Example1cg"
                 className="form-control form-control-lg"
                 name="name"
                 value={formData.name}
@@ -74,7 +85,6 @@ const Register = () => {
             <div className="form-outline mb-4 mt-4">
               <input
                 type="email"
-                id="form3Example3cg"
                 className="form-control form-control-lg"
                 name="email"
                 value={formData.email}
@@ -86,7 +96,6 @@ const Register = () => {
             <div className="form-outline mb-4 mt-4">
               <input
                 type="password"
-                id="form3Example4cg"
                 className="form-control form-control-lg"
                 name="password"
                 value={formData.password}
@@ -98,7 +107,6 @@ const Register = () => {
             <div className="form-outline mb-4 mt-4">
               <input
                 type="password"
-                id="form3Example4cdg"
                 className="form-control form-control-lg"
                 name="confirmPassword"
                 value={formData.confirmPassword}
@@ -111,10 +119,9 @@ const Register = () => {
               <input
                 className="form-check-input me-2"
                 type="checkbox"
-                value=""
-                id="form2Example3cg"
+                id="terms"
               />
-              <label className="form-check-label" htmlFor="form2Example3g">
+              <label className="form-check-label" htmlFor="terms">
                 I agree with all the statements in{" "}
                 <a href="#!" className="text-body">
                   <u>Terms of service</u>
@@ -127,8 +134,9 @@ const Register = () => {
                 type="submit"
                 className="btn btn-success btn-block btn-lg"
                 style={{ background: "black" }}
+                disabled={loading} // ✅ disable here
               >
-                Register
+                {loading ? "Registering..." : "Register"} {/* ✅ dynamic text */}
               </button>
             </div>
 
