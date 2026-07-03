@@ -1,25 +1,23 @@
 const User = require("../model/userSchema");
 const Post = require("../model/postModel");
-const uploadOnCloudinary = require("../config/cloudinary");
+const cloudinary = require("cloudinary").v2;
+
+// ❌ REMOVED: const uploadOnCloudinary = require("../config/cloudinary"); 
+// We no longer need this because Multer handles the Cloudinary upload directly!
 
 const uploadProfileImage = async (req, res) => {
   try {
     const id = req.params.id;
-    const imgs = req.file;
 
-    if (!imgs) {
+    // 1. Check if the file exists
+    if (!req.file) {
       return res.status(400).json({ msg: "Image required" });
     }
 
-    const imagePath = req.file.path;
-    const imgRes = await uploadOnCloudinary(imagePath);
+    // 2. Grab the URL directly (It's already on Cloudinary!)
+    const image = req.file.path;
 
-    if (!imgRes) {
-      return res.status(500).json({ msg: "Image upload failed" });
-    }
-
-    const image = imgRes.url;
-
+    // 3. Update the database
     await User.findByIdAndUpdate(
       id,
       { $set: { image } },
@@ -36,39 +34,28 @@ const uploadProfileImage = async (req, res) => {
 const sendPost = async (req, res) => {
   try {
     const fromUser = req.userID;
-    const imgs = req.file;
 
-    if (!imgs) {
+    if (!req.file) {
       return res.status(400).json({ msg: "Image required" });
     }
 
-    const imagePath = req.file.path;
-    const imgRes = await uploadOnCloudinary(imagePath);
-
-    if (!imgRes) {
-      return res.status(500).json({ msg: "Image upload failed" });
-    }
-
-    const image = imgRes.url;
-
+    // req.file.path is the Cloudinary URL
+    const image = req.file.path; 
     const title = req.body.title;
+    
     const currUser = await User.findById(fromUser);
-
     if (!currUser) {
       return res.status(404).json({ msg: "User not found" });
     }
-
-    const name = currUser.name;
 
     const post = new Post({
       original: fromUser,
       image,
       title,
-      originalName: name
+      originalName: currUser.name
     });
 
     await post.save();
-
     return res.status(200).json({ msg: "Post created successfully" });
   } catch (err) {
     console.log(err);
@@ -80,20 +67,13 @@ const updatePost = async (req, res) => {
   try {
     const postId = req.body.postId;
     const title = req.body.title;
-    const imgs = req.file;
 
-    if (!imgs) {
+    if (!req.file) {
       return res.status(400).json({ msg: "Image required" });
     }
 
-    const imagePath = req.file.path;
-    const imgRes = await uploadOnCloudinary(imagePath);
-
-    if (!imgRes) {
-      return res.status(500).json({ msg: "Image upload failed" });
-    }
-
-    const image = imgRes.url;
+    // req.file.path is the Cloudinary URL
+    const image = req.file.path;
 
     const updatedPost = await Post.findByIdAndUpdate(
       postId,
@@ -158,8 +138,24 @@ const addLike = async (req, res) => {
 
 const deletePost = async (req, res) => {
   try {
+    // 1. Find the post first so we can get the image URL
+    const post = await Post.findById(req.body.postId);
+    if (!post) {
+      return res.status(404).json({ msg: "Post not found" });
+    }
+
+    // 2. Extract the public_id from the Cloudinary URL and delete it from Cloudinary
+    if (post.image) {
+      // Cloudinary URLs look like: .../upload/v1234567/my_app_images/filename.jpg
+      // This regex extracts the 'my_app_images/filename' part
+      const publicId = post.image.split('/').slice(-2).join('/').split('.')[0];
+      await cloudinary.uploader.destroy(publicId);
+    }
+
+    // 3. Delete the post from MongoDB
     await Post.findByIdAndDelete(req.body.postId);
-    return res.status(200).json({ msg: "post deleted" });
+    
+    return res.status(200).json({ msg: "Post and image deleted" });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ msg: "Internal Server Error" });
