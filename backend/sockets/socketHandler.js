@@ -6,8 +6,8 @@ const setupSocket = (server) => {
   const io = socket(server, {
     cors: {
       origin: "*",
-      credentials: true
-    }
+      credentials: true,
+    },
   });
 
   global.onlineUsers = new Map();
@@ -17,10 +17,12 @@ const setupSocket = (server) => {
     console.log("A user connected");
 
     socket.on("add-user", (userId) => {
+      socket.userId = userId;
       onlineUsers.set(userId, socket.id);
     });
 
     socket.on("add-grp-user", (userId) => {
+      socket.groupUserId = userId;
       onlineGroupUsers.set(userId, socket.id);
     });
 
@@ -65,6 +67,12 @@ const setupSocket = (server) => {
     });
 
     socket.on("disconnect", () => {
+      if (socket.userId) {
+        onlineUsers.delete(socket.userId);
+      }
+      if (socket.groupUserId) {
+        onlineGroupUsers.delete(socket.groupUserId);
+      }
       console.log("A user disconnected");
     });
   });

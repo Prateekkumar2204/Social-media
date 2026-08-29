@@ -19,19 +19,39 @@ const Friends = () => {
   const id = user?._id;
 
   /* ---------------- SOCKET SETUP ---------------- */
-  useEffect(() => {
-    if (socket && user?._id) {
-      socket.emit("add-user", user._id);
+useEffect(() => {
+  if (!socket || !user?._id) return;
 
-      socket.on("msg-receive", (msg) => {
-        setArrivalmsg({ fromUser: false, message: msg.message });
-      });
+  // Register user
+  socket.emit("add-user", user._id);
 
-      socket.on("video-call-receive", (msg) => {
-        window.location = `videocall?room=${msg.message}`;
-      });
-    }
-  }, [socket, user]);
+  // Incoming chat message
+  const handleMessage = (msg) => {
+    setArrivalmsg({
+      fromUser: false,
+      message: msg.message,
+    });
+  };
+
+  // Incoming video call
+  const handleVideoCall = (msg) => {
+    const roomId = msg.roomId || msg.message;
+
+    if (!roomId) return;
+
+    window.location.href = `/videocall?room=${roomId}`;
+  };
+
+  socket.on("msg-receive", handleMessage);
+  socket.on("video-call-receive", handleVideoCall);
+
+  // Cleanup
+  return () => {
+    socket.off("msg-receive", handleMessage);
+    socket.off("video-call-receive", handleVideoCall);
+  };
+
+}, [socket, user?._id]);
 
   /* ---------------- AUTO SCROLL ---------------- */
   useEffect(() => {
