@@ -16,17 +16,15 @@ const Friends = () => {
   const [currPending, setCurrPending] = useState([])
   const [user,setGetUser]=useState({})
 
-  const { token,setUser } = useAuth()
+  const {setUser } = useAuth()
   console.log(user)
-  console.log(token)
+
   const id = user._id
   const firstRender = async () => {
     try {
       const response = await fetch(`http://localhost:3000/myfriends`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        credentials: "include",
       })
       if (response) {
         const data = await response.json()
@@ -37,9 +35,7 @@ const Friends = () => {
 
       const response2 = await fetch(`http://localhost:3000/getfriends`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        credentials: "include",
       })
       if (response2) {
         const data = await response2.json()
@@ -50,9 +46,7 @@ const Friends = () => {
 
       const response3 = await fetch(`http://localhost:3000/mypendingrequest`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        credentials: "include",
       })
       if (response3) {
         const data = await response3.json()
@@ -85,8 +79,8 @@ const Friends = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
         },
+        credentials: "include",
         body: JSON.stringify({
           ide
       })
@@ -110,8 +104,8 @@ const Friends = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
         },
+        credentials:"include",
         body: JSON.stringify({
           ide
         })
@@ -135,8 +129,8 @@ const Friends = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
         },
+        credentials:"include",
         body: JSON.stringify({
           ide
         })
@@ -160,8 +154,8 @@ const Friends = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
         },
+        credentials:"include",
         body: JSON.stringify({
           ide
         })

@@ -1,12 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../store/auth.jsx";
 
 const ProtectedRoute = () => {
   // Logic: Check if a token exists in localStorage
   // In a real app, you might use a 'user' object from a Context or Redux
-  const token = localStorage.getItem("token");
+  const {user,isLoading} = useAuth();
 
   // If no token, redirect to login. Use 'replace' to clean up navigation history.
-  if (!token) {
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 

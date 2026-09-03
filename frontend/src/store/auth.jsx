@@ -4,33 +4,33 @@ import { io } from "socket.io-client";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [token, setToken] = useState(localStorage.getItem("token"));
     const [user, setUser] = useState(null); // Initializing as null is better for "checking" state
     const [isLoading, setIsLoading] = useState(true);
- 
+
     const socket = useMemo(() => {
         return io("http://localhost:3000", {
             autoConnect: true,
+            withCredentials:true,
         });
     }, []);
 
-    const storeTokenInLS = (serverToken) => {
-        setToken(serverToken);
-        return localStorage.setItem("token", serverToken);
+
+    const LogoutUser = async () => {
+        try {
+            await fetch("http://localhost:3000/logout", {
+                method: "POST",
+                credentials: "include",
+            });
+        } catch (error) {
+            console.error("Logout Error:", error);
+        } finally {
+            setUser(null);
+            socket.disconnect();
+        }
     };
 
-    const LogoutUser = () => {
-        setToken("");
-        setUser(null);
-        localStorage.removeItem("token");
-        socket.disconnect(); // Manually disconnect on logout
-    };
 
     const userAuthentication = async () => {
-        if (!token) {
-            setIsLoading(false);
-            return;
-        }
 
         try {
             const response = await fetch("http://localhost:3000/check", {
@@ -67,39 +67,37 @@ export const AuthProvider = ({ children }) => {
         return () => {
             socket.off(); // Remove all listeners
         };
-    }, [token]);
+    }, []);
     useEffect(() => {
-    if (!socket || !token) return;
+        if (!socket || !token) return;
 
-    const handleIncomingVideoCall = (data) => {
-        const inviteCode = data.roomId || data.message;
+        const handleIncomingVideoCall = (data) => {
+            const inviteCode = data.roomId || data.message;
 
-        if (!inviteCode) return;
+            if (!inviteCode) return;
 
-        window.location.href = `/video-call?room=${inviteCode}`;
-    };
+            window.location.href = `/video-call?room=${inviteCode}`;
+        };
 
-    socket.on("video-call-receive", handleIncomingVideoCall);
+        socket.on("video-call-receive", handleIncomingVideoCall);
 
-    return () => {
-        socket.off("video-call-receive", handleIncomingVideoCall);
-    };
-}, [socket, token]);
+        return () => {
+            socket.off("video-call-receive", handleIncomingVideoCall);
+        };
+    }, [socket]);
     // Use token existence to determine if "checking" (logged in)
-    const isLoggedin = !!token;
+    const isLoggedin = !!user;
 
     return (
-        <AuthContext.Provider 
-            value={{ 
-                token, 
-                user, 
-                isLoggedin, 
+        <AuthContext.Provider
+            value={{
+                user,
+                isLoggedin,
                 isLoading,
-                storeTokenInLS, 
-                LogoutUser, 
-                setUser, 
-                setToken, 
-                socket 
+                storeTokenInLS,
+                LogoutUser,
+                setUser,
+                socket
             }}
         >
             {children}

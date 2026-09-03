@@ -6,7 +6,7 @@ import "../Scss/Login.scss";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { setToken } = useAuth();
+ 
 
   const [formData, setFormData] = useState({
     email: "",
@@ -54,7 +54,6 @@ export default function Login() {
 
       // ✅ SUCCESS LOGIN (if token exists)
       if (data.token) {
-        setToken(data.token);
         navigate("/");
       }
 

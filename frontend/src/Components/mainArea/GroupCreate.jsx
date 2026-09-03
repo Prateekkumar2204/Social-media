@@ -6,7 +6,7 @@ import cancel from '../../image/cancel.png'
 
 const Modal = (props) => {
 
-  const { token } = useAuth()
+
   const { toBeAdded, setToBeAdded, setGroupAdded } = props
   const [formData, setFormData] = useState({
     title: '',
@@ -20,9 +20,7 @@ const Modal = (props) => {
     try {
       const response = await fetch(`http://localhost:3000/getgroups`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        credentials: "include",
       })
       if (response) {
         const data = await response.json()
@@ -49,8 +47,8 @@ const Modal = (props) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
           },
+          credentials: "include",
           body: JSON.stringify({
             name: formData.title,
             arr: newArray

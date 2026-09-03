@@ -8,7 +8,6 @@ import cancel from '../../image/cancel.png'
 const Modal = (props) => {
   const [upload, setUpload] = useState(false)
 
-  const { token } = useAuth()
   const { setUpdatepost, currid, firstrender } = props
   const [formData, setFormData] = useState({
     title: '',
@@ -40,8 +39,8 @@ const Modal = (props) => {
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${token}`
-          }
+          },
+          credentials:"include",
         }
       );
 

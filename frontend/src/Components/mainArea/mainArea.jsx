@@ -12,7 +12,6 @@ import { useAuth } from "../../store/auth";
 
 export default function MainArea() {
   const [messages, setMessages] = React.useState([]);
-  const { token } = useAuth();
   const [commentmsg, setCommentmsg] = React.useState("");
   const [currid, setCurrid] = React.useState("");
   const [commentsByPost, setCommentsByPost] = React.useState({});
@@ -26,9 +25,7 @@ export default function MainArea() {
     try {
       const response = await fetch("http://localhost:3000/getpost", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
       });
       if (response) {
         const data = await response.json();
@@ -70,8 +67,8 @@ export default function MainArea() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials:"include",
         body: JSON.stringify({
           postId: ide,
         }),
@@ -92,8 +89,8 @@ export default function MainArea() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials:"include",
         body: JSON.stringify({
           postId: ide,
           content: commentmsg,
@@ -121,8 +118,8 @@ export default function MainArea() {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
         body: JSON.stringify({
           postId: ide,
         }),
