@@ -6,7 +6,7 @@ import "../Scss/VerifyOtp.scss"; // Import the new styles
 export default function VerifyLoginOtp() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { setToken, setUser } = useAuth();
+  const {setUser } = useAuth();
 
   const email = location.state?.email;
   const [otp, setOtp] = useState("");
@@ -22,6 +22,7 @@ export default function VerifyLoginOtp() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ email, otp }),
       });
 
@@ -33,15 +34,13 @@ export default function VerifyLoginOtp() {
         return;
       }
 
-      // ✅ SAVE TOKEN
-      localStorage.setItem("token", data.token);
-      setToken(data.token);
+      
+    
 
       // ✅ FETCH USER
       const userRes = await fetch("http://localhost:3000/check", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
+        method: "GET",
+        credentials: "include",
       });
 
       const userData = await userRes.json();

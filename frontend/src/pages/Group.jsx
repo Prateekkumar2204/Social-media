@@ -25,7 +25,7 @@ const Groups = () => {
 
   const scrollRef = useRef();
 
-  const { token, setUser, user, socket } = useAuth();
+  const { setUser, user, socket } = useAuth();
   const id = user?._id;
 
   useEffect(() => {
@@ -59,9 +59,7 @@ const Groups = () => {
     try {
       const response = await fetch(`http://localhost:3000/getgroups`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        credentials:"include",
       })
       if (response) {
         const data = await response.json()
@@ -82,8 +80,8 @@ const Groups = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
         },
+        credentials:"include",
         body: JSON.stringify({
           groupId
         })
@@ -115,8 +113,8 @@ const Groups = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
         },
+        credentials:"include",
         body: JSON.stringify({
           groupId
         })
@@ -149,8 +147,8 @@ const Groups = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
         },
+        credentials:"include",
         body: JSON.stringify({
           groupId
         })
@@ -170,9 +168,7 @@ const Groups = () => {
     try {
       const res = await fetch(`http://localhost:3000/getMembersToAdded1`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        credentials:"include",
       });
       if (res.ok) {
         const data = await res.json();
@@ -213,8 +209,8 @@ const Groups = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
         },
+        credentials:"include",
         body: JSON.stringify({
           groupId:currChat,
           message:msg

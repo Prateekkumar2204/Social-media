@@ -23,15 +23,12 @@ const Leaderboard = () => {
     { rank: 10, name: 'Henry Davis', speed: 35, accuracy: 82 },
   ];
   const [leaderBoard,setLeaderBoard]=React.useState([])
-  const {token} =useAuth()
-  console.log(token)
+
   const leaderboardranks=async()=>{
     try{
        const response=await fetch("http://localhost:3000/leaderboard-backend",{
         method:"GET",
-        headers:{
-            Authorization:`Bearer ${token}`
-        }
+        credentials:"include",
        })
        if(response) {
         const data=await response.json()

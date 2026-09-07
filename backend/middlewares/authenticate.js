@@ -2,13 +2,12 @@ const jwt = require("jsonwebtoken");
 const User = require("../model/userSchema");
 
 const Authenticate = async (req, res, next) => {
-  const token = req.header("Authorization");
+  const jwtToken = req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "")
 
-  if (!token) {
+  if (!jwtToken) {
     return res.status(401).json({ msg: "Invalid auth" });
   }
 
-  const jwtToken = token.replace("Bearer", "").trim();
 
   try {
     const isVerified = jwt.verify(jwtToken, process.env.JWT_SECRET);

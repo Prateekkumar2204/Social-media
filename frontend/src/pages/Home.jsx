@@ -7,7 +7,6 @@ import dummyData from "../data.js"
 
 const HomePage = () => {
   const navigate = useNavigate();
-  // Added isLoading from the context we updated earlier
   const { LogoutUser, user, isLoading } = useAuth();
 
   // 1. Handle the initial loading state

@@ -41,6 +41,7 @@ const register = async (req, res) => {
     }
 
     const otp = generateOTP();
+    console.log("Generated OTP:", otp); 
     const hashedOtp = hashOTP(otp);
 
     if (userExist && !userExist.isVerified) {
@@ -134,7 +135,7 @@ const login = async (req, res) => {
     }
 
     const otp = generateOTP();
-
+    console.log(otp);
     user.loginOtp = hashOTP(otp);
     user.loginOtpExpires = Date.now() + 5 * 60 * 1000;
 
@@ -182,8 +183,15 @@ const verifyLoginOtp = async (req, res) => {
     await user.save();
 
     const token = await user.generateAuthToken();
+    const options = {
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      sameSite: "None",
+      path: "/",
+      secure: true,
+      httpOnly: true
+    };
 
-    return res.status(200).json({
+    return res.status(200).cookie("token", token, options).json({
       message: "Login successful",
       token
     });

@@ -2,7 +2,7 @@ const User = require("../model/userSchema");
 const Post = require("../model/postModel");
 const cloudinary = require("cloudinary").v2;
 
-// ❌ REMOVED: const uploadOnCloudinary = require("../config/cloudinary"); 
+// REMOVED: const uploadOnCloudinary = require("../config/cloudinary"); 
 // We no longer need this because Multer handles the Cloudinary upload directly!
 
 const uploadProfileImage = async (req, res) => {
@@ -92,17 +92,62 @@ const getPost = async (req, res) => {
   try {
     const fromUser = req.userID;
 
-    const projectedPost = await Post.find({}).sort({ createdAt: -1 });
+    const limit = Math.min(parseInt(req.query.limit) || 5, 20);
+    const cursor = req.query.cursor;
 
-    const likedUsers = projectedPost.map((post) => ({
-      isLiked: post.likes && post.likes.includes(fromUser.toString()),
+    let query = {};
+
+    // Load More
+    if (cursor) {
+      const [createdAt, id] = cursor.split("_");
+
+      query = {
+        $or: [{createdAt: { $lt: new Date(createdAt) },},
+              {createdAt: new Date(createdAt),_id: { $lt: id },},
+            ],
+        };
+    }
+
+
+    const posts = await Post.find(query)
+      .sort({
+        createdAt: -1,
+        _id: -1,
+      })
+      .limit(limit + 1);
+
+    const hasMore = posts.length > limit;
+
+    if (hasMore) {
+      posts.pop();
+    }
+
+    const likedUsers = posts.map((post) => ({
+      isLiked: post.likes?.includes(fromUser.toString()),
       post,
       fromSelf: post.original.equals(fromUser),
     }));
 
-    return res.status(200).json({ msg: likedUsers });
+    let nextCursor = null;
+
+    if (posts.length > 0 && hasMore) {
+      const lastPost = posts[posts.length - 1];
+
+      nextCursor =
+        `${lastPost.createdAt.toISOString()}_${lastPost._id}`;
+    }
+
+    return res.status(200).json({
+      msg: likedUsers,
+      nextCursor,
+      hasMore,
+    });
   } catch (err) {
-    return res.status(500).json({ msg: "Internal Server Error" });
+    console.log(err);
+
+    return res.status(500).json({
+      msg: "Internal Server Error",
+    });
   }
 };
 

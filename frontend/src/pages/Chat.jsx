@@ -15,7 +15,7 @@ const Friends = () => {
   const [RoomPopUp, setRoomPopUp] = useState(false);
   const scrollRef = useRef();
 
-  const { token, user, socket } = useAuth();
+  const { user, socket } = useAuth();
   const id = user?._id;
 
   /* ---------------- SOCKET SETUP ---------------- */
@@ -73,8 +73,8 @@ useEffect(() => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
+      credentials: "include",
       body: JSON.stringify({
         ide: currChat,
         content: msg,
@@ -100,8 +100,8 @@ useEffect(() => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
+      credentials:"include",
       body: JSON.stringify({ ide }),
     });
 
@@ -113,9 +113,7 @@ useEffect(() => {
   const firstRender = async () => {
     const response = await fetch("http://localhost:3000/myfriends", {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      credentials: "include",
     });
 
     const data = await response.json();
