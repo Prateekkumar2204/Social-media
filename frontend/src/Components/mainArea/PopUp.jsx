@@ -6,8 +6,8 @@ import { useAuth } from '../../store/auth';
 import cancel from '../../image/cancel.png'
 
 const Modal = (props) => {
-  const [upload, setUpload] = useState(false)
-
+  const [upload, setUpload] = useState(false);
+  const [isPosting, setIsPosting] = useState(false);
  
   const { setpopupshow, firstrender } = props
   const [formData, setFormData] = useState({
@@ -30,6 +30,7 @@ const Modal = (props) => {
     e.preventDefault();
     console.log("sending");
     const formdata = new FormData();
+    setIsPosting(true);
     formdata.append('image', image);
     formdata.append('title', formData.title);
 
@@ -41,13 +42,15 @@ const Modal = (props) => {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-          credentials:"include",
+          withCredentials: true,
         }
       );
       firstrender();
+      setIsPosting(false);
       console.log(result.data);
     } catch (err) {
       console.error(err);
+      setIsPosting(false);
     }
     setpopupshow(false)
   };
@@ -72,7 +75,9 @@ const Modal = (props) => {
             <input type="email" class="form-control postcomment" id="exampleFormControlInput1" placeholder="Enter the Caption" onChange={handleChange} name='title' value={formData.title}></input>
           </div>
         </div>
-        <button className="btn btn-dark cancel-btn" style={{ backgroundColor: "#36013f"}} onClick={submit}>POST</button>
+        <button className="btn btn-dark cancel-btn" style={{ backgroundColor: isPosting ? "#36013f" : "#36013f"}} onClick={submit} disabled={isPosting}>
+          {isPosting ? 'Posting...' : 'POST'}
+        </button>
       </div>
     </div>
   );

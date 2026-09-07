@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./mainArea.css";
 import LeftPane from "./LeftPane.jsx";
 import like from "../../image/blackheart.png";
@@ -15,28 +15,62 @@ export default function MainArea() {
   const [commentmsg, setCommentmsg] = React.useState("");
   const [currid, setCurrid] = React.useState("");
   const [commentsByPost, setCommentsByPost] = React.useState({});
-  
+
+  const [page, setPage] = useState(1);
+  const [cursor, setCursor] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
+
   // State for toggling popups and comments
   const [commentSection, setCommentSection] = React.useState(null);
   const [popupshow, setpopupshow] = React.useState(false);
   const [updatePost, setUpdatepost] = React.useState(false);
+  const limit = 5; 
 
-  const firstrender = async () => {
+
+  const firstrender = async (nextcursor = null) => {
     try {
-      const response = await fetch("http://localhost:3000/getpost", {
-        method: "POST",
-        credentials: "include",
-      });
-      if (response) {
+      setLoading(true);
+      let url = `http://localhost:3000/getpost?limit=${limit}`;
+
+      if (nextcursor) {
+        url += `&cursor=${encodeURIComponent(nextcursor)}`;
+      }
+
+      const response = await fetch(url,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
         const data = await response.json();
-        let obj = data.msg;
-        console.log(obj);
-        setMessages(obj);
+        const obj = data.msg;
+
+        if (nextcursor) {
+          setMessages((prev) => [...prev, ...obj]);
+        } else {
+          setMessages(obj);
+        }
+        setCursor(data.nextCursor);
+        setHasMore(data.hasMore);
       }
     } catch (error) {
-      console.log(error); // Fixed: removed the literal "${error}" string
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
+
+
+  const loadMore = async () => {
+    await firstrender(cursor);
+  };
+
+
+
 
   useEffect(() => {
     firstrender();
@@ -68,18 +102,35 @@ export default function MainArea() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials:"include",
+        credentials: "include",
         body: JSON.stringify({
           postId: ide,
         }),
       });
       if (response) {
-        const data = await response.json();
-        console.log(data);
-        firstrender();
+        // const data = await response.json();
+        // console.log(data);
+        // await firstrender(1, false);
+        // setPage(1);
+
+        setMessages((prevMessages) => prevMessages.map((message) => {
+          if (message.post._id === ide) {
+            const alreadyLiked = message.isLiked;
+            return {
+              ...message,
+              isLiked: !alreadyLiked,
+              post: {
+                ...message.post,
+                likes: alreadyLiked
+                  ? message.post.likes.filter((id) => id.toString() !== user._id.toString())
+                  : [...message.post.likes, user._id],
+              },
+            };
+          } return message;
+        }));
       }
     } catch (error) {
-      console.log(error); // Fixed
+      console.log(error);
     }
   };
 
@@ -90,7 +141,7 @@ export default function MainArea() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials:"include",
+        credentials: "include",
         body: JSON.stringify({
           postId: ide,
           content: commentmsg,
@@ -101,8 +152,7 @@ export default function MainArea() {
       console.log(data);
 
       if (response.ok) {
-        setCommentmsg(""); // Fixed: Capitalized 'C' to match the state hook
-        await firstrender();
+        setCommentmsg("");
         await fetchCommentsByPost(ide);
       } else {
         alert(data.msg);
@@ -127,10 +177,14 @@ export default function MainArea() {
       if (response) {
         const data = await response.json();
         console.log(data);
-        firstrender();
+        setMessages((prevMessages) =>
+          prevMessages.filter(
+            (message) => message.post._id !== ide
+          )
+        );
       }
     } catch (error) {
-      console.log(error); // Fixed
+      console.log(error);
     }
   };
 
@@ -218,7 +272,7 @@ export default function MainArea() {
                 <span className="comment">{message.post.originalName}</span>:{" "}
                 {message.post.title}
               </div>
-              
+
               {/* FIXED: The comment section is now wrapped conditionally */}
               {commentSection === index && (
                 <div className="comments">
@@ -263,6 +317,21 @@ export default function MainArea() {
               )}
             </div>
           ))}
+          {hasMore && (
+            <div className="text-center p-3">
+              <button
+                className="btn btn-dark"
+                onClick={loadMore}
+                disabled={loading}
+                style={{
+                  backgroundColor: "#36013f",
+                  borderColor: "#36013f",
+                }}
+              >
+                {loading ? "Loading..." : "Load More"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

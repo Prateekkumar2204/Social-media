@@ -9,8 +9,8 @@ const VideoCall = () => {
     useEffect(() => {
         if (!containerRef.current) return;
 
-        const appID = 1112088196;
-        const serverSecret = "c2979b9b929bbdbfe175ca81ac98e1e1";
+        const appID = 313680763;
+        const serverSecret = "542aa51e305cfadb160425d9590bdd8e";
         const roomID = searchParams.get("room") || "main";
 
         const userID = "user_" + Date.now() + "_" + Math.floor(Math.random() * 10000);

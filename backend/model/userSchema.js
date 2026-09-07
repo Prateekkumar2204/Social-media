@@ -8,14 +8,10 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true },
     password: { type: String, required: true },
     cpassword: { type: String, required: true },
-    image: { type: String },
+    image: { type: String },  
     
     // for phone, laptop etc
-    tokens: [
-      {
-        token: { type: String, required: true },
-      },
-    ],
+  
     
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     pendingRequest: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
@@ -52,11 +48,6 @@ userSchema.methods.generateAuthToken = async function () {
       { expiresIn: "24h" }
     );
     
-    // Add the new token to the array
-    this.tokens = this.tokens.concat({ token: token });
-    
-    // Use clear OTP fields before saving to avoid any weirdness
-    await this.save();
     return token;
   } catch (err) {
     console.log("Error generating token:", err);

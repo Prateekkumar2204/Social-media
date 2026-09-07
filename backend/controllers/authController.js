@@ -41,6 +41,7 @@ const register = async (req, res) => {
     }
 
     const otp = generateOTP();
+    console.log("Generated OTP:", otp); 
     const hashedOtp = hashOTP(otp);
 
     if (userExist && !userExist.isVerified) {
@@ -134,7 +135,7 @@ const login = async (req, res) => {
     }
 
     const otp = generateOTP();
-
+    console.log(otp);
     user.loginOtp = hashOTP(otp);
     user.loginOtpExpires = Date.now() + 5 * 60 * 1000;
 

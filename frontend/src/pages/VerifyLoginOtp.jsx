@@ -22,6 +22,7 @@ export default function VerifyLoginOtp() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ email, otp }),
       });
 
@@ -38,7 +39,8 @@ export default function VerifyLoginOtp() {
 
       // ✅ FETCH USER
       const userRes = await fetch("http://localhost:3000/check", {
-        credentials: "include"
+        method: "GET",
+        credentials: "include",
       });
 
       const userData = await userRes.json();
