@@ -210,11 +210,33 @@ const checkAuth = async (req, res) => {
   }
 };
 
+
+const logoutuser = async (req, res) => {
+    try {
+        res.clearCookie("token", {
+            sameSite: "None",
+            path: "/",
+            secure: true,
+            httpOnly: true
+        });
+
+        return res.status(200).json({
+            message: "Logged out successfully"
+        });
+    } catch (error) {
+        console.error("Error while logging out:", error);
+        return res.status(500).json({
+            message: "Server error"
+        });
+    }
+};
+
 module.exports = {
   home,
   register,
   verifyOtp,
   login,
   verifyLoginOtp,
-  checkAuth
+  checkAuth,
+  logoutuser
 };
