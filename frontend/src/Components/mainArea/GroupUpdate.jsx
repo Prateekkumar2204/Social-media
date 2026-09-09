@@ -19,7 +19,7 @@ const Modal2 = (props) => {
   };
   const firstRender = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/getgroups`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/getgroups`, {
         method: "GET",
         credentials: "include",
       })
@@ -49,7 +49,7 @@ const submit = async () => {
       }
       if(addMem===true){
         try {
-            const res = await fetch(`http://localhost:3000/addmembers`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/addmembers`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -73,7 +73,7 @@ const submit = async () => {
       }
       else{
         try {
-            const res = await fetch(`http://localhost:3000/removemembers`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/removemembers`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

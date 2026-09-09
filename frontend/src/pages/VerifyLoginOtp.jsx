@@ -17,7 +17,7 @@ export default function VerifyLoginOtp() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:3000/verify-login-otp", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/verify-login-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,7 +38,7 @@ export default function VerifyLoginOtp() {
     
 
       // ✅ FETCH USER
-      const userRes = await fetch("http://localhost:3000/check", {
+      const userRes = await fetch(`${import.meta.env.VITE_API_URL}/check`, {
         method: "GET",
         credentials: "include",
       });

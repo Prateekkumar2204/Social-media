@@ -32,7 +32,7 @@ export default function MainArea() {
   const firstrender = async (nextcursor = null) => {
     try {
       setLoading(true);
-      let url = `http://localhost:3000/getpost?limit=${limit}`;
+      let url = `${import.meta.env.VITE_API_URL}/getpost?limit=${limit}`;
 
       if (nextcursor) {
         url += `&cursor=${encodeURIComponent(nextcursor)}`;
@@ -79,7 +79,7 @@ export default function MainArea() {
   const fetchCommentsByPost = async (postId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/getcomments/${postId}`
+        `${import.meta.env.VITE_API_URL}/getcomments/${postId}`
       );
 
       const data = await response.json();
@@ -97,7 +97,7 @@ export default function MainArea() {
 
   const handlelike = async (ide) => {
     try {
-      const response = await fetch("http://localhost:3000/addlike", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/addlike`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -136,7 +136,7 @@ export default function MainArea() {
 
   const sendcomment = async (ide) => {
     try {
-      const response = await fetch("http://localhost:3000/addcommentv2", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/addcommentv2`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -164,7 +164,7 @@ export default function MainArea() {
 
   const handledelete = async (ide) => {
     try {
-      const response = await fetch("http://localhost:3000/deletepost", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/deletepost`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

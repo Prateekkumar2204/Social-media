@@ -29,7 +29,7 @@ const Profile = () => {
 
     try {
       const result = await axios.post(
-        `http://localhost:3000/upload-image/${id}`,
+        `${import.meta.env.VITE_API_URL}/upload-image/${id}`,
         formdata,
         {
           headers: { "Content-Type": "multipart/form-data" }

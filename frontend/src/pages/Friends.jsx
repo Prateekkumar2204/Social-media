@@ -22,7 +22,7 @@ const Friends = () => {
   const id = user._id
   const firstRender = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/myfriends`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/myfriends`, {
         method: "GET",
         credentials: "include",
       })
@@ -33,7 +33,7 @@ const Friends = () => {
         setCurrFriend(obj)
       }
 
-      const response2 = await fetch(`http://localhost:3000/getfriends`, {
+      const response2 = await fetch(`${import.meta.env.VITE_API_URL}/getfriends`, {
         method: "GET",
         credentials: "include",
       })
@@ -44,7 +44,7 @@ const Friends = () => {
         setFriendData(obj)
       }
 
-      const response3 = await fetch(`http://localhost:3000/mypendingrequest`, {
+      const response3 = await fetch(`${import.meta.env.VITE_API_URL}/mypendingrequest`, {
         method: "GET",
         credentials: "include",
       })
@@ -75,7 +75,7 @@ const Friends = () => {
     console.log(ide)
     let sendid=ide
     try {
-      const res = await fetch(`http://localhost:3000/acceptRequest`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/acceptRequest`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -100,7 +100,7 @@ const Friends = () => {
   }
   const rejectRequest = async (ide) => {
     try {
-      const res = await fetch(`http://localhost:3000/cancelRequest`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/cancelRequest`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,7 +125,7 @@ const Friends = () => {
   }
   const removeFriend = async (ide) => {
     try {
-      const res = await fetch(`http://localhost:3000/unfriend`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/unfriend`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -150,7 +150,7 @@ const Friends = () => {
   }
   const sendRequest = async (ide) => {
     try {
-      const res = await fetch(`http://localhost:3000/sendRequest`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/sendRequest`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

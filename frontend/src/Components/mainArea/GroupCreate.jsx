@@ -18,7 +18,7 @@ const Modal = (props) => {
   };
   const firstRender = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/getgroups`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/getgroups`, {
         method: "GET",
         credentials: "include",
       })
@@ -43,7 +43,7 @@ const Modal = (props) => {
         }
       }
       try {
-        const res = await fetch(`http://localhost:3000/creategroup`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/creategroup`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

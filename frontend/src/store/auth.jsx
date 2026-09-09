@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const socket = useMemo(() => {
-        return io("http://localhost:3000", {
+        return io(`${import.meta.env.VITE_API_URL}`, {
             autoConnect: true,
             withCredentials: true,
         });
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
 
     const LogoutUser = async () => {
         try {
-            await fetch("http://localhost:3000/logout", {
+            await fetch(`${import.meta.env.VITE_API_URL}/logout`, {
                 method: "POST",
                 credentials: "include",
             });
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
 
     const userAuthentication = async () => {
         try {
-            const response = await fetch("http://localhost:3000/check", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/check`, {
                 method: "GET",
                 credentials: "include",
             });
