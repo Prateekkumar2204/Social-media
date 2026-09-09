@@ -57,7 +57,7 @@ const Groups = () => {
 
   const firstRender = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/getgroups`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/getgroups`, {
         method: "GET",
         credentials:"include",
       })
@@ -76,7 +76,7 @@ const Groups = () => {
   const addition=async(ide)=>{
     let groupId=ide
     try {
-      const res = await fetch(`http://localhost:3000/getMembersToAdded`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/getMembersToAdded`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +109,7 @@ const Groups = () => {
   const subtraction=async(ide)=>{
     let groupId=ide
     try {
-      const res = await fetch(`http://localhost:3000/getMembersToRemoved`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/getMembersToRemoved`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -143,7 +143,7 @@ const Groups = () => {
     setCurrChat(ide)
     let groupId=ide
     try {
-      const response = await fetch(`http://localhost:3000/getgroupchat`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/getgroupchat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -166,7 +166,7 @@ const Groups = () => {
 
   const addgroup = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/getMembersToAdded1`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/getMembersToAdded1`, {
         method: "GET",
         credentials:"include",
       });
@@ -205,7 +205,7 @@ const Groups = () => {
     e.preventDefault()
 
     try {
-      const response = await fetch(`http://localhost:3000/sendgroupchat`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/sendgroupchat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

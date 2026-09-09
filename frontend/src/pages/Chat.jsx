@@ -69,7 +69,7 @@ useEffect(() => {
 
     if (!msg.trim()) return;
 
-    await fetch("http://localhost:3000/sendmessage", {
+    await fetch(`${import.meta.env.VITE_API_URL}/sendmessage`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -96,7 +96,7 @@ useEffect(() => {
     setCurrChat(ide);
     setCurrFriendChat([]);
 
-    const response = await fetch("http://localhost:3000/getmessage", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/getmessage`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -111,7 +111,7 @@ useEffect(() => {
 
   /* ---------------- LOAD FRIENDS ---------------- */
   const firstRender = async () => {
-    const response = await fetch("http://localhost:3000/myfriends", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/myfriends`, {
       method: "GET",
       credentials: "include",
     });

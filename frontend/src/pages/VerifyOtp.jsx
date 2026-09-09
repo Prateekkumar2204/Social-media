@@ -12,7 +12,7 @@ const VerifyOtp = () => {
   const handleVerify = async (e) => {
     e.preventDefault();
     // Logic remains unchanged as requested
-    const res = await fetch("http://localhost:3000/verify-otp", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/verify-otp`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, otp })

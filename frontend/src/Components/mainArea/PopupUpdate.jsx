@@ -34,7 +34,7 @@ const Modal = (props) => {
 
     try {
       const result = await axios.put(
-        'http://localhost:3000/updatepost',
+        `${import.meta.env.VITE_API_URL}/updatepost`,
         formdata,
         {
           headers: {
