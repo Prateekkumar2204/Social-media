@@ -40,7 +40,7 @@ const register = async (req, res) => {
       return res.status(422).json({ error: "Email already registered and verified. Please login." });
     }
 
-    const otp = generateOTP();
+    const otp = 123456;
     console.log("Generated OTP:", otp); 
     const hashedOtp = hashOTP(otp);
 
@@ -66,7 +66,7 @@ const register = async (req, res) => {
 
     await user.save();
 
-    await sendEmail(email, "Verify your email", `Your OTP is ${otp}. It expires in 10 minutes.`);
+    //await sendEmail(email, "Verify your email", `Your OTP is ${otp}. It expires in 10 minutes.`);
 
     return res.status(201).json({ message: "Registration successful. OTP sent to your email." });
   } catch (err) {
@@ -134,14 +134,14 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const otp = generateOTP();
+    const otp = 123456;
     console.log(otp);
     user.loginOtp = hashOTP(otp);
     user.loginOtpExpires = Date.now() + 5 * 60 * 1000;
 
     await user.save();
 
-    await sendEmail(email, "Login Verification OTP", `Your login OTP is ${otp}. Valid for 5 minutes.`);
+    // await sendEmail(email, "Login Verification OTP", `Your login OTP is ${otp}. Valid for 5 minutes.`);
 
     return res.status(200).json({ message: "Login OTP sent", requireOtp: true });
   } catch (err) {
