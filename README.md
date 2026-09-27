@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎓 Campusly
+# 🎓 VibeLink
 
 ### An AI-powered, college-exclusive communication platform that centralizes campus interaction through verified institutional access.
 
